@@ -1,0 +1,65 @@
+<section class="stylior-newsletter" id="stylior-newsletter-{{ section.id }}">
+  <div class="stylior-newsletter__inner">
+    <div>
+      <h2 class="stylior-newsletter__title">{{ section.settings.heading }}</h2>
+      <p class="stylior-newsletter__text">{{ section.settings.text }}</p>
+    </div>
+    {% form 'customer', class: 'stylior-newsletter__form' %}
+      <input type="hidden" name="contact[tags]" value="newsletter">
+      <label class="visually-hidden" for="NewsletterEmail-{{ section.id }}">Email</label>
+      <input
+        id="NewsletterEmail-{{ section.id }}"
+        type="email"
+        name="contact[email]"
+        value="{{ form.email }}"
+        placeholder="{{ section.settings.placeholder }}"
+        required
+        autocomplete="email"
+      >
+      <button type="submit" aria-label="{{ section.settings.button_label }}">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    {% endform %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Stylior newsletter",
+  "tag": "section",
+  "class": "section-stylior-newsletter",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Get the drop first"
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Supporting text",
+      "default": "Fresh fits, limited colorways, and studio news — straight to your inbox."
+    },
+    {
+      "type": "text",
+      "id": "placeholder",
+      "label": "Input placeholder",
+      "default": "Email address"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Submit label",
+      "default": "Subscribe"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Stylior newsletter"
+    }
+  ]
+}
+{% endschema %}

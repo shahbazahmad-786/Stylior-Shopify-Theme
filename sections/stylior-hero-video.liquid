@@ -1,0 +1,70 @@
+{% comment %}
+  Stylior hero — plain full-bleed video only
+{% endcomment %}
+
+<section
+  class="stylior-hero stylior-hero--plain"
+  id="stylior-hero-{{ section.id }}"
+  {% if section.settings.min_height != blank %}
+    style="--stylior-hero-min-height: {{ section.settings.min_height }}vh;"
+  {% endif %}
+>
+  <div class="stylior-hero__media">
+    {% if section.settings.video != blank %}
+      {{
+        section.settings.video
+        | video_tag:
+          class: 'stylior-hero__video',
+          autoplay: true,
+          loop: true,
+          muted: true,
+          controls: false,
+          image_size: '1920x'
+      }}
+    {% else %}
+      <video
+        class="stylior-hero__video"
+        autoplay
+        muted
+        loop
+        playsinline
+        preload="metadata"
+        poster="{{ 'stylior-banner-2.png' | asset_url }}"
+        aria-label="{{ shop.name | escape }}"
+      >
+        <source src="{{ 'stylior-hero-shirt.mp4' | asset_url }}" type="video/mp4">
+      </video>
+    {% endif %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Stylior hero video",
+  "tag": "section",
+  "class": "section-stylior-hero",
+  "settings": [
+    {
+      "type": "video",
+      "id": "video",
+      "label": "Hero video (recommended)",
+      "info": "Upload via Files if the theme asset is over 10MB. Falls back to stylior-hero-shirt.mp4 in assets."
+    },
+    {
+      "type": "range",
+      "id": "min_height",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "unit": "vh",
+      "label": "Minimum height",
+      "default": 90
+    }
+  ],
+  "presets": [
+    {
+      "name": "Stylior hero video"
+    }
+  ]
+}
+{% endschema %}

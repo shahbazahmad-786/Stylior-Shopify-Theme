@@ -1,0 +1,48 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "type": "footer",
+  "name": "Footer",
+  "sections": {
+    "stylior_pro_footer": {
+      "type": "stylior-pro-footer",
+      "settings": {
+        "tagline": "Premium clothing from Multan — crafted for everyday style.",
+        "shop_heading": "Shop",
+        "shop_menu": "",
+        "explore_heading": "Explore",
+        "explore_menu": "",
+        "contact_heading": "Contact",
+        "phone": "+92 324 1178086",
+        "email": "stylior.pk@gmail.com",
+        "address": "Gulgasht Colony, Multan, Punjab, Pakistan",
+        "instagram": "https://www.instagram.com/stylior.pk/",
+        "facebook": "https://www.facebook.com/stylior.pk",
+        "tiktok": "https://www.tiktok.com/@stylior.pk",
+        "show_newsletter": true,
+        "news_heading": "Stay in the loop",
+        "news_text": "Get updates on new arrivals and offers via email.",
+        "news_placeholder": "Enter your email",
+        "news_button": "Subscribe"
+      }
+    },
+    "stylior_whatsapp": {
+      "type": "stylior-whatsapp",
+      "settings": {
+        "phone": "923241178086",
+        "message": "Assalam o Alaikum Stylior, order ke bare mein sawal hai."
+      }
+    }
+  },
+  "order": [
+    "stylior_pro_footer",
+    "stylior_whatsapp"
+  ]
+}

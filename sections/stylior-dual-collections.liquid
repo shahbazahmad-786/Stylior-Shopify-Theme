@@ -1,0 +1,100 @@
+<section class="stylior-dual" id="stylior-dual-{{ section.id }}">
+  <div class="stylior-dual__grid">
+    {% for block in section.blocks %}
+      {% liquid
+        assign collection = block.settings.collection
+        assign image = block.settings.image
+        if image == blank and collection != blank and collection.featured_image != blank
+          assign image = collection.featured_image
+        endif
+        assign href = block.settings.link
+        if href == blank and collection != blank
+          assign href = collection.url
+        endif
+      %}
+      <a
+        class="stylior-dual__card"
+        href="{{ href | default: '#' }}"
+        {{ block.shopify_attributes }}
+      >
+        {% if block.settings.show_sale_badge %}
+          <span class="stylior-dual__badge">{{ block.settings.badge_text }}</span>
+        {% endif %}
+        {% if image != blank %}
+          {{
+            image
+            | image_url: width: 1200
+            | image_tag: loading: 'lazy', widths: '400, 700, 1000, 1200', sizes: '(min-width: 750px) 50vw, 100vw', alt: image.alt
+          }}
+        {% else %}
+          {% liquid
+            assign dual_fallback = 'stylior-banner-bharosa.png'
+            if forloop.index == 2
+              assign dual_fallback = 'stylior-banner-2.png'
+            endif
+          %}
+          <img
+            src="{{ dual_fallback | asset_url }}"
+            alt="{{ collection.title | default: 'Stylior collection' | escape }}"
+            loading="lazy"
+            width="1200"
+            height="1500"
+          >
+        {% endif %}
+      </a>
+    {% endfor %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Stylior dual collections",
+  "tag": "section",
+  "class": "section-stylior-dual",
+  "max_blocks": 2,
+  "blocks": [
+    {
+      "type": "card",
+      "name": "Collection card",
+      "settings": [
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Custom image"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Custom link"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_sale_badge",
+          "label": "Show edit badge",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "badge_text",
+          "label": "Badge text",
+          "default": "Hot"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Stylior dual collections",
+      "blocks": [
+        { "type": "card" },
+        { "type": "card" }
+      ]
+    }
+  ]
+}
+{% endschema %}

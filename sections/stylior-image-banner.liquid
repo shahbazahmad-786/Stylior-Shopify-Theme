@@ -1,0 +1,108 @@
+{% comment %}
+  Full-width brand banner using theme assets or uploaded image
+{% endcomment %}
+
+{% liquid
+  assign banner_image = section.settings.image
+  assign asset_file = section.settings.asset_banner | default: 'bharosa'
+  if asset_file == 'banner2'
+    assign asset_src = 'stylior-banner-2.png' | asset_url
+    assign asset_alt = 'Stylior banner'
+  else
+    assign asset_src = 'stylior-banner-bharosa.png' | asset_url
+    assign asset_alt = 'Bharosa campaign banner'
+  endif
+%}
+
+<section class="stylior-banner" id="stylior-banner-{{ section.id }}">
+  {% if section.settings.link != blank %}
+    <a class="stylior-banner__link" href="{{ section.settings.link }}" aria-label="{{ section.settings.heading | default: asset_alt | escape }}">
+  {% else %}
+    <div class="stylior-banner__link">
+  {% endif %}
+
+  {% if banner_image != blank %}
+    {{
+      banner_image
+      | image_url: width: 2000
+      | image_tag:
+        class: 'stylior-banner__img',
+        loading: 'lazy',
+        widths: '600, 900, 1200, 1600, 2000',
+        sizes: '100vw',
+        alt: banner_image.alt | default: section.settings.heading
+    }}
+  {% else %}
+    <img
+      class="stylior-banner__img"
+      src="{{ asset_src }}"
+      alt="{{ asset_alt | escape }}"
+      loading="lazy"
+      width="2000"
+      height="800"
+    >
+  {% endif %}
+
+  {% if section.settings.heading != blank or section.settings.script_text != blank %}
+    <div class="stylior-banner__overlay">
+      {% if section.settings.heading != blank %}
+        <h2 class="stylior-banner__title">{{ section.settings.heading }}</h2>
+      {% endif %}
+      {% if section.settings.script_text != blank %}
+        <span class="stylior-banner__script">{{ section.settings.script_text }}</span>
+      {% endif %}
+    </div>
+  {% endif %}
+
+  {% if section.settings.link != blank %}
+    </a>
+  {% else %}
+    </div>
+  {% endif %}
+</section>
+
+{% schema %}
+{
+  "name": "Stylior image banner",
+  "tag": "section",
+  "class": "section-stylior-banner",
+  "settings": [
+    {
+      "type": "select",
+      "id": "asset_banner",
+      "label": "Built-in banner asset",
+      "options": [
+        { "value": "bharosa", "label": "Campaign banner" },
+        { "value": "banner2", "label": "Lookbook banner" }
+      ],
+      "default": "bharosa",
+      "info": "Used when no custom image is uploaded"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Custom image (optional)"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading"
+    },
+    {
+      "type": "text",
+      "id": "script_text",
+      "label": "Script overlay"
+    },
+    {
+      "type": "url",
+      "id": "link",
+      "label": "Link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Stylior image banner"
+    }
+  ]
+}
+{% endschema %}

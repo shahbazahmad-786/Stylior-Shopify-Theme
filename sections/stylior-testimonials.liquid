@@ -1,0 +1,177 @@
+<section class="stylior-reviews" id="stylior-reviews-{{ section.id }}">
+  <div class="stylior-reviews__intro">
+    <p class="stylior-reviews__eyebrow">Customers</p>
+    <h2 class="stylior-reviews__heading">{{ section.settings.heading }}</h2>
+  </div>
+  <div class="stylior-reviews__carousel">
+    <button
+      type="button"
+      class="stylior-reviews__nav stylior-reviews__nav--prev"
+      aria-label="Previous reviews"
+      data-reviews-prev
+    >
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+    <div class="stylior-reviews__track" data-reviews-track>
+      {% for block in section.blocks %}
+        <article class="stylior-reviews__card stylior-reviews__card--quote" {{ block.shopify_attributes }}>
+          {% if block.settings.image != blank %}
+            {{
+              block.settings.image
+              | image_url: width: 700
+              | image_tag: loading: 'lazy', widths: '300, 500, 700', sizes: '280px', class: 'stylior-reviews__img', alt: block.settings.image.alt
+            }}
+          {% endif %}
+          <div class="stylior-reviews__body">
+            <div class="stylior-reviews__stars" aria-hidden="true">★★★★★</div>
+            {% if block.settings.quote != blank %}
+              <p class="stylior-reviews__quote">{{ block.settings.quote }}</p>
+            {% endif %}
+            {% if block.settings.name != blank %}
+              <p class="stylior-reviews__name">{{ block.settings.name }}</p>
+            {% endif %}
+            {% if block.settings.city != blank %}
+              <p class="stylior-reviews__city">{{ block.settings.city }}</p>
+            {% endif %}
+          </div>
+        </article>
+      {% endfor %}
+    </div>
+    <button
+      type="button"
+      class="stylior-reviews__nav stylior-reviews__nav--next"
+      aria-label="Next reviews"
+      data-reviews-next
+    >
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+  </div>
+</section>
+
+<script>
+  (function () {
+    var root = document.getElementById('stylior-reviews-{{ section.id }}');
+    if (!root) return;
+
+    var track = root.querySelector('[data-reviews-track]');
+    var prev = root.querySelector('[data-reviews-prev]');
+    var next = root.querySelector('[data-reviews-next]');
+    if (!track || !prev || !next) return;
+
+    function getStep() {
+      var card = track.querySelector('.stylior-reviews__card');
+      if (!card) return 300;
+      var styles = window.getComputedStyle(track);
+      var gap = parseFloat(styles.columnGap || styles.gap) || 16;
+      return card.getBoundingClientRect().width + gap;
+    }
+
+    function updateNav() {
+      var maxScroll = track.scrollWidth - track.clientWidth;
+      prev.disabled = track.scrollLeft <= 2;
+      next.disabled = track.scrollLeft >= maxScroll - 2;
+    }
+
+    prev.addEventListener('click', function () {
+      track.scrollBy({ left: -getStep(), behavior: 'smooth' });
+    });
+
+    next.addEventListener('click', function () {
+      track.scrollBy({ left: getStep(), behavior: 'smooth' });
+    });
+
+    track.addEventListener('scroll', updateNav, { passive: true });
+    window.addEventListener('resize', updateNav);
+    updateNav();
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Stylior testimonials",
+  "tag": "section",
+  "class": "section-stylior-reviews",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "What People Say"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "review",
+      "name": "Review",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Customer photo"
+        },
+        {
+          "type": "textarea",
+          "id": "quote",
+          "label": "Review text",
+          "default": "Quality bohot solid hai, fit bilkul perfect aayi. Definitely dobara order karunga."
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Customer name",
+          "default": "Ahmed Raza"
+        },
+        {
+          "type": "text",
+          "id": "city",
+          "label": "City",
+          "default": "Lahore"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Stylior testimonials",
+      "blocks": [
+        {
+          "type": "review",
+          "settings": {
+            "quote": "Bhai quality zabardast hai. Fabric soft hai aur print bilkul clear. Dost bhi pooch rahe thay kahan se li.",
+            "name": "Ahmed Raza",
+            "city": "Lahore"
+          }
+        },
+        {
+          "type": "review",
+          "settings": {
+            "quote": "Pehle socha tha online risky hoga, lekin parcel bhi neat tha aur size chart se fit spot on aa gayi.",
+            "name": "Hassan Ali",
+            "city": "Karachi"
+          }
+        },
+        {
+          "type": "review",
+          "settings": {
+            "quote": "Color live mein aur bhi acha lag raha hai. Oversized look perfect hai daily wear ke liye.",
+            "name": "Ayesha Khan",
+            "city": "Islamabad"
+          }
+        },
+        {
+          "type": "review",
+          "settings": {
+            "quote": "Delivery time pe aa gaya aur packing premium feel deti hai. Stylior ka standard clear hai.",
+            "name": "Usman Malik",
+            "city": "Multan"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

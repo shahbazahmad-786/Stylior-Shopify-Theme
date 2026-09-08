@@ -1,0 +1,192 @@
+{% comment %}
+  Stylior interactive product feature callouts — matches reference hero
+{% endcomment %}
+
+<section class="stylior-callouts" id="stylior-callouts-{{ section.id }}">
+  <div class="stylior-callouts__stage">
+    {% if section.settings.image != blank %}
+      {{
+        section.settings.image
+        | image_url: width: 1400
+        | image_tag:
+          class: 'stylior-callouts__image',
+          loading: 'eager',
+          widths: '400, 600, 800, 1000, 1400',
+          sizes: '(min-width: 750px) 720px, 92vw',
+          alt: section.settings.image.alt | default: shop.name
+      }}
+    {% else %}
+      <img
+        class="stylior-callouts__image"
+        src="{{ 'stylior-banner-2.png' | asset_url }}"
+        alt="{{ shop.name | escape }}"
+        loading="eager"
+        width="1400"
+        height="1750"
+      >
+    {% endif %}
+
+    {% for block in section.blocks %}
+      {% liquid
+        assign x = block.settings.x
+        assign y = block.settings.y
+        assign align = block.settings.align
+      %}
+      <div
+        class="stylior-callout stylior-callout--{{ align }}"
+        {{ block.shopify_attributes }}
+        style="left: {{ x }}%; top: {{ y }}%; transform: translate({% if align == 'right' %}-100%{% else %}0{% endif %}, -50%);"
+      >
+        {% if align == 'right' %}
+          <span class="stylior-callout__label">{{ block.settings.label }}</span>
+          <span
+            class="stylior-callout__dot"
+            style="right: -{{ block.settings.line_length }}px; top: 50%; transform: translateY(-50%);"
+          ></span>
+          <span
+            class="stylior-callout__line"
+            style="width: {{ block.settings.line_length }}px; right: 0; top: 50%;"
+          ></span>
+        {% else %}
+          <span
+            class="stylior-callout__dot"
+            style="left: -{{ block.settings.line_length }}px; top: 50%; transform: translateY(-50%);"
+          ></span>
+          <span
+            class="stylior-callout__line"
+            style="width: {{ block.settings.line_length }}px; left: -{{ block.settings.line_length }}px; top: 50%;"
+          ></span>
+          <span class="stylior-callout__label">{{ block.settings.label }}</span>
+        {% endif %}
+      </div>
+    {% endfor %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Stylior feature callouts",
+  "tag": "section",
+  "class": "section-stylior-callouts",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Hero product image"
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "#7ef0d8"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "callout",
+      "name": "Callout",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "Bold print"
+        },
+        {
+          "type": "range",
+          "id": "x",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "label": "Horizontal position",
+          "default": 10
+        },
+        {
+          "type": "range",
+          "id": "y",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "label": "Vertical position",
+          "default": 30
+        },
+        {
+          "type": "select",
+          "id": "align",
+          "label": "Label side",
+          "options": [
+            { "value": "left", "label": "Left of point" },
+            { "value": "right", "label": "Right of point" }
+          ],
+          "default": "left"
+        },
+        {
+          "type": "range",
+          "id": "line_length",
+          "min": 20,
+          "max": 120,
+          "step": 4,
+          "unit": "px",
+          "label": "Connector length",
+          "default": 48
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Stylior feature callouts",
+      "blocks": [
+        {
+          "type": "callout",
+          "settings": {
+            "label": "Bold print",
+            "x": 8,
+            "y": 28,
+            "align": "left",
+            "line_length": 56
+          }
+        },
+        {
+          "type": "callout",
+          "settings": {
+            "label": "Pop embroidery",
+            "x": 92,
+            "y": 32,
+            "align": "right",
+            "line_length": 56
+          }
+        },
+        {
+          "type": "callout",
+          "settings": {
+            "label": "Soft heavyweight",
+            "x": 8,
+            "y": 68,
+            "align": "left",
+            "line_length": 56
+          }
+        },
+        {
+          "type": "callout",
+          "settings": {
+            "label": "Statement details",
+            "x": 92,
+            "y": 72,
+            "align": "right",
+            "line_length": 56
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
+{% style %}
+  #stylior-callouts-{{ section.id }} {
+    background: linear-gradient(160deg, {{ section.settings.background }} 0%, #b8ffe8 42%, #fff3b0 100%);
+  }
+{% endstyle %}

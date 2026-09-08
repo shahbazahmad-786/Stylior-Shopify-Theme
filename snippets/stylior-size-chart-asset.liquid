@@ -1,0 +1,62 @@
+{%- doc -%}
+  Resolves the correct Stylior size-chart asset for a product.
+
+  Matching order:
+  1. Product metafield custom.size_chart_key (khawab | bharosa-black | bharosa-white | default)
+  2. Title / handle / type / tags keyword match
+  3. Default chart
+
+  @param {object} product - Product object
+  @param {string} [force_key] - Optional forced chart key from section settings
+
+  @example
+  {% render 'stylior-size-chart-asset', product: product %}
+{%- enddoc -%}
+
+{%- liquid
+  assign chart_key = force_key | default: '' | strip | downcase
+  assign chart_file = 'stylior-size-chart-default.png'
+  assign chart_label = 'Size chart'
+
+  if chart_key == blank and product.metafields.custom.size_chart_key != blank
+    assign chart_key = product.metafields.custom.size_chart_key.value | default: product.metafields.custom.size_chart_key | downcase | strip
+  endif
+
+  if chart_key == blank and product != blank
+    assign haystack = product.title | append: ' ' | append: product.handle | append: ' ' | append: product.type | downcase
+    for tag in product.tags
+      assign haystack = haystack | append: ' ' | append: tag | downcase
+    endfor
+
+    if haystack contains 'khawab'
+      assign chart_key = 'khawab'
+    elsif haystack contains 'bharosa'
+      if haystack contains 'white' or haystack contains 'off-white' or haystack contains 'cream'
+        assign chart_key = 'bharosa-white'
+      else
+        assign chart_key = 'bharosa-black'
+      endif
+    else
+      assign chart_key = 'default'
+    endif
+  endif
+
+  case chart_key
+    when 'khawab'
+      assign chart_file = 'stylior-size-chart-khawab.png'
+      assign chart_label = 'Khawab size chart'
+    when 'bharosa-white', 'bharosa_white', 'bharosa white'
+      assign chart_file = 'stylior-size-chart-bharosa-white.png'
+      assign chart_label = 'Bharosa white size chart'
+    when 'bharosa-black', 'bharosa_black', 'bharosa black', 'bharosa'
+      assign chart_file = 'stylior-size-chart-bharosa-black.png'
+      assign chart_label = 'Bharosa black size chart'
+    else
+      assign chart_file = 'stylior-size-chart-default.png'
+      assign chart_label = 'Size chart'
+  endcase
+
+  echo chart_file
+  echo '||'
+  echo chart_label
+-%}

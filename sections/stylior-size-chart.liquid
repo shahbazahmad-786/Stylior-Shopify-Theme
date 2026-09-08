@@ -1,0 +1,156 @@
+{% comment %}
+  Product size chart — auto-picks chart image from theme assets by product name
+{% endcomment %}
+
+{% liquid
+  assign force_key = section.settings.force_chart
+  if force_key == 'auto'
+    assign force_key = ''
+  endif
+
+  capture chart_meta
+    render 'stylior-size-chart-asset', product: product, force_key: force_key
+  endcapture
+  assign chart_parts = chart_meta | strip | split: '||'
+  assign chart_file = chart_parts[0] | strip
+  assign chart_label = chart_parts[1] | default: 'Size chart' | strip
+  assign chart_src = chart_file | asset_url
+  assign modal_id = 'stylior-size-chart-' | append: section.id
+%}
+
+{% if product != blank %}
+  <section class="stylior-size-chart" id="{{ modal_id }}-wrap">
+    <button
+      type="button"
+      class="stylior-size-chart__trigger"
+      aria-haspopup="dialog"
+      aria-controls="{{ modal_id }}"
+      data-stylior-size-open="{{ modal_id }}"
+    >
+      <span class="stylior-size-chart__icon" aria-hidden="true">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M3 7h18v10H3V7zm3 0v3m3-3v2m3-2v3m3-3v2m3-2v3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </span>
+      {{ section.settings.button_label }}
+    </button>
+
+    <div
+      class="stylior-size-chart__dialog"
+      id="{{ modal_id }}"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="{{ modal_id }}-title"
+      hidden
+    >
+      <div class="stylior-size-chart__backdrop" data-stylior-size-close tabindex="-1"></div>
+      <div class="stylior-size-chart__panel">
+        <div class="stylior-size-chart__header">
+          <h2 class="stylior-size-chart__title" id="{{ modal_id }}-title">
+            {{ section.settings.heading | default: chart_label }}
+          </h2>
+          <button
+            type="button"
+            class="stylior-size-chart__close"
+            data-stylior-size-close
+            aria-label="Close size chart"
+          >
+            &times;
+          </button>
+        </div>
+        <div class="stylior-size-chart__body">
+          <img
+            class="stylior-size-chart__img"
+            src="{{ chart_src }}"
+            alt="{{ chart_label | escape }} — {{ product.title | escape }}"
+            loading="lazy"
+            width="1400"
+            height="1800"
+          >
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    (function () {
+      var root = document.getElementById('{{ modal_id }}-wrap');
+      if (!root || root.dataset.bound === '1') return;
+      root.dataset.bound = '1';
+
+      var dialog = document.getElementById('{{ modal_id }}');
+      var openBtn = root.querySelector('[data-stylior-size-open]');
+
+      function openDialog() {
+        if (!dialog) return;
+        dialog.hidden = false;
+        document.documentElement.classList.add('stylior-size-chart-open');
+        var closeBtn = dialog.querySelector('.stylior-size-chart__close');
+        if (closeBtn) closeBtn.focus();
+      }
+
+      function closeDialog() {
+        if (!dialog) return;
+        dialog.hidden = true;
+        document.documentElement.classList.remove('stylior-size-chart-open');
+        if (openBtn) openBtn.focus();
+      }
+
+      if (openBtn) {
+        openBtn.addEventListener('click', openDialog);
+      }
+
+      root.querySelectorAll('[data-stylior-size-close]').forEach(function (el) {
+        el.addEventListener('click', closeDialog);
+      });
+
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && dialog && !dialog.hidden) closeDialog();
+      });
+    })();
+  </script>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Stylior size chart",
+  "tag": "section",
+  "class": "section-stylior-size-chart",
+  "enabled_on": {
+    "templates": ["product"]
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Size chart"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Modal heading",
+      "default": "Size chart"
+    },
+    {
+      "type": "select",
+      "id": "force_chart",
+      "label": "Force chart (optional)",
+      "options": [
+        { "value": "auto", "label": "Auto (by product name)" },
+        { "value": "default", "label": "Default" },
+        { "value": "bharosa-black", "label": "Bharosa black" },
+        { "value": "bharosa-white", "label": "Bharosa white" },
+        { "value": "khawab", "label": "Khawab" }
+      ],
+      "default": "auto",
+      "info": "Auto matches product title/handle/tags: Bharosa, Khawab, Black, White"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Stylior size chart"
+    }
+  ]
+}
+{% endschema %}

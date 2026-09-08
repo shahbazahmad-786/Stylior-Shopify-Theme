@@ -1,0 +1,55 @@
+{% comment %}
+  Company contact column for Stylior footer
+{% endcomment %}
+
+<div class="stylior-footer-company" {{ section.shopify_attributes }}>
+  <h4>{{ section.settings.heading }}</h4>
+  {% if section.settings.hotline != blank %}
+    <p><strong>Hotline:</strong> {{ section.settings.hotline }}</p>
+  {% endif %}
+  {% if section.settings.email != blank %}
+    <p><strong>Email:</strong> <a href="mailto:{{ section.settings.email }}">{{ section.settings.email }}</a></p>
+  {% endif %}
+  {% if section.settings.office != blank %}
+    <p><strong>Office:</strong> {{ section.settings.office }}</p>
+  {% endif %}
+</div>
+
+{% schema %}
+{
+  "name": "Stylior company info",
+  "tag": "section",
+  "class": "section-stylior-company",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Studio"
+    },
+    {
+      "type": "text",
+      "id": "hotline",
+      "label": "Hotline",
+      "default": "+92 324 1178086"
+    },
+    {
+      "type": "text",
+      "id": "email",
+      "label": "Email",
+      "default": "stylior.pk@gmail.com"
+    },
+    {
+      "type": "textarea",
+      "id": "office",
+      "label": "Office",
+      "default": "Gulgasht Colony, Multan, Punjab, Pakistan"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Stylior company info"
+    }
+  ]
+}
+{% endschema %}

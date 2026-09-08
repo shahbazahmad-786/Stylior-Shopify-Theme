@@ -1,0 +1,319 @@
+{%- liquid
+  assign variant = closest.product.selected_or_first_available_variant
+  assign inventory_quantity = variant.inventory_quantity | default: 0
+  assign inventory_managed = false
+  if variant.inventory_management == 'shopify'
+    assign inventory_managed = true
+  endif
+
+  assign threshold = block.settings.inventory_threshold | default: 12
+  assign show_stock = block.settings.show_stock
+  assign show_live = block.settings.show_live_viewers
+  assign show_selling_fast = block.settings.show_selling_fast
+  assign show_trust = block.settings.show_trust_points
+
+  assign stock_status = 'hidden'
+  assign show_stock_count = false
+  if show_stock
+    if inventory_managed
+      if inventory_quantity > 0 and inventory_quantity <= threshold
+        assign stock_status = 'low'
+        assign show_stock_count = true
+      elsif inventory_quantity > threshold
+        assign stock_status = 'in_stock'
+      elsif variant.available
+        assign stock_status = 'low'
+      endif
+    elsif variant.available
+      assign stock_status = 'low'
+    endif
+  endif
+
+  assign live_min = block.settings.live_min | default: 4
+  assign live_max = block.settings.live_max | default: 18
+-%}
+
+<div
+  class="stylior-urgency"
+  id="StyliorUrgency-{{ block.id }}"
+  data-product-id="{{ closest.product.id }}"
+  data-live-min="{{ live_min }}"
+  data-live-max="{{ live_max }}"
+  {{ block.shopify_attributes }}
+>
+  {%- if show_live -%}
+    <p class="stylior-urgency__row stylior-urgency__row--live" role="status">
+      <span class="stylior-urgency__pulse" aria-hidden="true"></span>
+      <span>
+        <strong class="stylior-urgency__live-count" data-stylior-live-count>{{ live_min | plus: 3 }}</strong>
+        {{ block.settings.live_label | default: 'people are viewing this right now' }}
+      </span>
+    </p>
+  {%- endif -%}
+
+  {%- if stock_status == 'low' -%}
+    <p class="stylior-urgency__row stylior-urgency__row--stock" role="status">
+      <span class="stylior-urgency__icon" aria-hidden="true">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1.5L14.5 13.5H1.5L8 1.5Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="M8 6v3.5M8 11.5h.01" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+      </span>
+      <span>
+        {%- if show_stock_count -%}
+          Only <strong>{{ inventory_quantity }}</strong> left — order soon
+        {%- else -%}
+          {{ block.settings.stock_label | default: 'Few items left — selling fast' }}
+        {%- endif -%}
+      </span>
+    </p>
+  {%- elsif stock_status == 'in_stock' and show_selling_fast -%}
+    <p class="stylior-urgency__row stylior-urgency__row--fast" role="status">
+      <span class="stylior-urgency__icon" aria-hidden="true">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M9 1.5L3.5 9H8l-.5 5.5L13.5 7H9L9 1.5Z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
+      </span>
+      <span>{{ block.settings.selling_fast_label | default: 'Selling fast this week' }}</span>
+    </p>
+  {%- elsif show_selling_fast and stock_status == 'hidden' and variant.available -%}
+    <p class="stylior-urgency__row stylior-urgency__row--fast" role="status">
+      <span class="stylior-urgency__icon" aria-hidden="true">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M9 1.5L3.5 9H8l-.5 5.5L13.5 7H9L9 1.5Z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
+      </span>
+      <span>{{ block.settings.selling_fast_label | default: 'Selling fast this week' }}</span>
+    </p>
+  {%- endif -%}
+
+  {%- if show_trust -%}
+    <ul class="stylior-urgency__trust" aria-label="Shopping benefits">
+      {%- if block.settings.trust_1 != blank -%}
+        <li>{{ block.settings.trust_1 }}</li>
+      {%- endif -%}
+      {%- if block.settings.trust_2 != blank -%}
+        <li>{{ block.settings.trust_2 }}</li>
+      {%- endif -%}
+      {%- if block.settings.trust_3 != blank -%}
+        <li>{{ block.settings.trust_3 }}</li>
+      {%- endif -%}
+    </ul>
+  {%- endif -%}
+</div>
+
+<script>
+  (function () {
+    var root = document.getElementById('StyliorUrgency-{{ block.id }}');
+    if (!root) return;
+    var el = root.querySelector('[data-stylior-live-count]');
+    if (!el) return;
+
+    var min = parseInt(root.getAttribute('data-live-min'), 10) || 4;
+    var max = parseInt(root.getAttribute('data-live-max'), 10) || 18;
+    if (max < min) max = min;
+    var productId = root.getAttribute('data-product-id') || '0';
+    var seed = 0;
+    for (var i = 0; i < productId.length; i++) seed = (seed + productId.charCodeAt(i) * (i + 1)) % 997;
+    var hour = new Date().getHours();
+    var count = min + ((seed + hour * 3) % (max - min + 1));
+
+    function render() {
+      el.textContent = String(count);
+    }
+
+    render();
+    setInterval(function () {
+      var delta = Math.random() > 0.55 ? 1 : -1;
+      count = Math.min(max, Math.max(min, count + delta));
+      render();
+    }, 9000 + (seed % 4000));
+  })();
+</script>
+
+{% stylesheet %}
+  .stylior-urgency {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+  .stylior-urgency__row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+    font-size: 0.8125rem;
+    line-height: 1.35;
+    color: var(--stylior-ink, #1b1b2f);
+  }
+
+  .stylior-urgency__row--live {
+    color: var(--stylior-teal-deep, #0a8f84);
+  }
+
+  .stylior-urgency__row--stock {
+    color: var(--stylior-coral-deep, #e63d2a);
+    font-weight: 600;
+  }
+
+  .stylior-urgency__row--fast {
+    color: #b45309;
+    font-weight: 600;
+  }
+
+  .stylior-urgency__icon {
+    display: inline-flex;
+    flex-shrink: 0;
+  }
+
+  .stylior-urgency__pulse {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--stylior-teal, #12b5a7);
+    box-shadow: 0 0 0 0 rgba(18, 181, 167, 0.55);
+    animation: stylior-urgency-pulse 1.8s ease-out infinite;
+    flex-shrink: 0;
+  }
+
+  @keyframes stylior-urgency-pulse {
+    0% {
+      box-shadow: 0 0 0 0 rgba(18, 181, 167, 0.5);
+    }
+    70% {
+      box-shadow: 0 0 0 8px rgba(18, 181, 167, 0);
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgba(18, 181, 167, 0);
+    }
+  }
+
+  .stylior-urgency__trust {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 14px;
+    list-style: none;
+    margin: 4px 0 0;
+    padding: 10px 0 0;
+    border-top: 1px solid rgba(27, 27, 47, 0.08);
+  }
+
+  .stylior-urgency__trust li {
+    position: relative;
+    padding-left: 16px;
+    font-size: 0.75rem;
+    line-height: 1.3;
+    color: var(--stylior-muted, #5c5a72);
+  }
+
+  .stylior-urgency__trust li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.35em;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--stylior-teal, #12b5a7);
+    box-shadow: inset 0 0 0 2px #fff, 0 0 0 1px var(--stylior-teal, #12b5a7);
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Stylior urgency",
+  "tag": null,
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_live_viewers",
+      "label": "Show live viewers",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "live_label",
+      "label": "Live viewers label",
+      "default": "people are viewing this right now"
+    },
+    {
+      "type": "range",
+      "id": "live_min",
+      "label": "Live viewers minimum",
+      "min": 1,
+      "max": 50,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "live_max",
+      "label": "Live viewers maximum",
+      "min": 2,
+      "max": 99,
+      "step": 1,
+      "default": 18
+    },
+    {
+      "type": "checkbox",
+      "id": "show_stock",
+      "label": "Show low stock message",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "inventory_threshold",
+      "label": "Low stock threshold",
+      "min": 1,
+      "max": 50,
+      "step": 1,
+      "default": 12
+    },
+    {
+      "type": "text",
+      "id": "stock_label",
+      "label": "Fallback low stock text",
+      "default": "Few items left — selling fast"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_selling_fast",
+      "label": "Show selling fast message",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "selling_fast_label",
+      "label": "Selling fast text",
+      "default": "Selling fast this week"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_trust_points",
+      "label": "Show trust points",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "trust_1",
+      "label": "Trust point 1",
+      "default": "Free shipping"
+    },
+    {
+      "type": "text",
+      "id": "trust_2",
+      "label": "Trust point 2",
+      "default": "Easy returns"
+    },
+    {
+      "type": "text",
+      "id": "trust_3",
+      "label": "Trust point 3",
+      "default": "Custom fit guarantee"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Stylior urgency",
+      "category": "t:categories.product"
+    }
+  ]
+}
+{% endschema %}

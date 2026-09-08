@@ -1,0 +1,97 @@
+<section class="stylior-campaign" id="stylior-campaign-{{ section.id }}">
+  <div class="stylior-campaign__grid">
+    {% liquid
+      assign fallback_assets = 'stylior-banner-bharosa.png,stylior-banner-2.png,stylior-banner-bharosa.png' | split: ','
+    %}
+    {% for i in (1..3) %}
+      {% liquid
+        assign image_key = 'image_' | append: i
+        assign image = section.settings[image_key]
+        assign fallback_index = i | minus: 1
+        assign fallback_file = fallback_assets[fallback_index]
+      %}
+      <div class="stylior-campaign__cell">
+        {% if image != blank %}
+          {{
+            image
+            | image_url: width: 900
+            | image_tag: loading: 'lazy', widths: '400, 600, 900', sizes: '(min-width: 750px) 33vw, 100vw', alt: image.alt
+          }}
+        {% else %}
+          <img
+            src="{{ fallback_file | asset_url }}"
+            alt="{{ section.settings.title | escape }}"
+            loading="lazy"
+            width="900"
+            height="1200"
+          >
+        {% endif %}
+      </div>
+    {% endfor %}
+
+    {% if section.settings.title != blank or section.settings.script_text != blank %}
+      <div class="stylior-campaign__overlay">
+        {% if section.settings.title != blank %}
+          <h2 class="stylior-campaign__title">{{ section.settings.title }}</h2>
+        {% endif %}
+        {% if section.settings.script_text != blank %}
+          <span class="stylior-campaign__script">{{ section.settings.script_text }}</span>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    {% if section.settings.link != blank %}
+      <a
+        href="{{ section.settings.link }}"
+        class="stylior-campaign__link"
+        style="position:absolute;inset:0;z-index:3;"
+        aria-label="{{ section.settings.title | default: 'Campaign' | escape }}"
+      ></a>
+    {% endif %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Stylior campaign banner",
+  "tag": "section",
+  "class": "section-stylior-campaign",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Campaign title"
+    },
+    {
+      "type": "text",
+      "id": "script_text",
+      "label": "Script overlay"
+    },
+    {
+      "type": "url",
+      "id": "link",
+      "label": "Link"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_1",
+      "label": "Image 1"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_2",
+      "label": "Image 2"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_3",
+      "label": "Image 3"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Stylior campaign banner"
+    }
+  ]
+}
+{% endschema %}
