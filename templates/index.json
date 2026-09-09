@@ -19,6 +19,7 @@
             "overlay_script": "Khawab",
             "heading": "Khawab Article",
             "text": "Discover the bestsellers that have captured the hearts of our customers with their perfect blend of functionality and style.",
+            "link": "",
             "button_label": "Shop now"
           }
         },
@@ -29,6 +30,7 @@
             "overlay_script": "Bharosa",
             "heading": "Bharosa Collection",
             "text": "Discover the bestsellers that have captured the hearts of our customers with their perfect blend of functionality and style.",
+            "link": "",
             "button_label": "Shop now"
           }
         },
@@ -39,6 +41,7 @@
             "overlay_script": "Stylior",
             "heading": "New Arrivals",
             "text": "Discover the bestsellers that have captured the hearts of our customers with their perfect blend of functionality and style.",
+            "link": "",
             "button_label": "Shop now"
           }
         }
@@ -50,7 +53,7 @@
       ],
       "settings": {
         "autoplay": true,
-        "autoplay_speed": 5
+        "autoplay_speed": 3
       }
     },
     "product_list_styles": {
