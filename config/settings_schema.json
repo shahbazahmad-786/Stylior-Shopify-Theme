@@ -61,7 +61,7 @@
     "settings": [
       {
         "type": "paragraph",
-        "content": "Set how many products you have. One product picker and one size-chart upload will appear for each. After you select a product, its name shows next to the upload so you know which chart belongs to which product."
+        "content": "Set how many products you have. One name field and one size-chart upload will appear for each. Type the product name next to its chart so you know which file belongs to which product."
       },
       {
         "type": "range",
@@ -71,23 +71,23 @@
         "max": 20,
         "step": 1,
         "default": 1,
-        "info": "Abhi 1 product hai to 1 rakho. Naya product add karne ke baad ye number badhao — utne hi named upload fields aa jayenge."
+        "info": "Abhi 1 product hai to 1 rakho. Naya product add karne ke baad ye number badhao."
       },
       {
         "type": "header",
         "content": "Product 1"
       },
       {
-        "type": "product",
-        "id": "size_chart_product_1",
+        "type": "text",
+        "id": "size_chart_name_1",
         "label": "Product 1 name",
-        "info": "Product select karo — upar uska name aa jayega ke ye chart kis ka hai."
+        "info": "Shopify product title exactly, e.g. Khawab."
       },
       {
         "type": "image_picker",
         "id": "size_chart_image_1",
         "label": "Size chart for product 1",
-        "info": "Ye isi product ka size chart hai jiska name upar select hai."
+        "info": "Ye isi product ka size chart hai jiska name upar likha hai."
       },
       {
         "type": "header",
@@ -95,17 +95,17 @@
         "visible_if": "{{ settings.size_chart_count >= 2 }}"
       },
       {
-        "type": "product",
-        "id": "size_chart_product_2",
+        "type": "text",
+        "id": "size_chart_name_2",
         "label": "Product 2 name",
-        "info": "Product select karo — upar uska name aa jayega ke ye chart kis ka hai.",
+        "info": "Shopify product title exactly, e.g. Khawab.",
         "visible_if": "{{ settings.size_chart_count >= 2 }}"
       },
       {
         "type": "image_picker",
         "id": "size_chart_image_2",
         "label": "Size chart for product 2",
-        "info": "Ye isi product ka size chart hai jiska name upar select hai.",
+        "info": "Ye isi product ka size chart hai jiska name upar likha hai.",
         "visible_if": "{{ settings.size_chart_count >= 2 }}"
       },
       {
@@ -114,17 +114,17 @@
         "visible_if": "{{ settings.size_chart_count >= 3 }}"
       },
       {
-        "type": "product",
-        "id": "size_chart_product_3",
+        "type": "text",
+        "id": "size_chart_name_3",
         "label": "Product 3 name",
-        "info": "Product select karo — upar uska name aa jayega ke ye chart kis ka hai.",
+        "info": "Shopify product title exactly, e.g. Khawab.",
         "visible_if": "{{ settings.size_chart_count >= 3 }}"
       },
       {
         "type": "image_picker",
         "id": "size_chart_image_3",
         "label": "Size chart for product 3",
-        "info": "Ye isi product ka size chart hai jiska name upar select hai.",
+        "info": "Ye isi product ka size chart hai jiska name upar likha hai.",
         "visible_if": "{{ settings.size_chart_count >= 3 }}"
       },
       {
@@ -133,17 +133,17 @@
         "visible_if": "{{ settings.size_chart_count >= 4 }}"
       },
       {
-        "type": "product",
-        "id": "size_chart_product_4",
+        "type": "text",
+        "id": "size_chart_name_4",
         "label": "Product 4 name",
-        "info": "Product select karo — upar uska name aa jayega ke ye chart kis ka hai.",
+        "info": "Shopify product title exactly, e.g. Khawab.",
         "visible_if": "{{ settings.size_chart_count >= 4 }}"
       },
       {
         "type": "image_picker",
         "id": "size_chart_image_4",
         "label": "Size chart for product 4",
-        "info": "Ye isi product ka size chart hai jiska name upar select hai.",
+        "info": "Ye isi product ka size chart hai jiska name upar likha hai.",
         "visible_if": "{{ settings.size_chart_count >= 4 }}"
       },
       {
@@ -152,17 +152,17 @@
         "visible_if": "{{ settings.size_chart_count >= 5 }}"
       },
       {
-        "type": "product",
-        "id": "size_chart_product_5",
+        "type": "text",
+        "id": "size_chart_name_5",
         "label": "Product 5 name",
-        "info": "Product select karo — upar uska name aa jayega ke ye chart kis ka hai.",
+        "info": "Shopify product title exactly, e.g. Khawab.",
         "visible_if": "{{ settings.size_chart_count >= 5 }}"
       },
       {
         "type": "image_picker",
         "id": "size_chart_image_5",
         "label": "Size chart for product 5",
-        "info": "Ye isi product ka size chart hai jiska name upar select hai.",
+        "info": "Ye isi product ka size chart hai jiska name upar likha hai.",
         "visible_if": "{{ settings.size_chart_count >= 5 }}"
       },
       {
@@ -171,17 +171,17 @@
         "visible_if": "{{ settings.size_chart_count >= 6 }}"
       },
       {
-        "type": "product",
-        "id": "size_chart_product_6",
+        "type": "text",
+        "id": "size_chart_name_6",
         "label": "Product 6 name",
-        "info": "Product select karo — upar uska name aa jayega ke ye chart kis ka hai.",
+        "info": "Shopify product title exactly, e.g. Khawab.",
         "visible_if": "{{ settings.size_chart_count >= 6 }}"
       },
       {
         "type": "image_picker",
         "id": "size_chart_image_6",
         "label": "Size chart for product 6",
-        "info": "Ye isi product ka size chart hai jiska name upar select hai.",
+        "info": "Ye isi product ka size chart hai jiska name upar likha hai.",
         "visible_if": "{{ settings.size_chart_count >= 6 }}"
       },
       {
@@ -190,17 +190,17 @@
         "visible_if": "{{ settings.size_chart_count >= 7 }}"
       },
       {
-        "type": "product",
-        "id": "size_chart_product_7",
+        "type": "text",
+        "id": "size_chart_name_7",
         "label": "Product 7 name",
-        "info": "Product select karo — upar uska name aa jayega ke ye chart kis ka hai.",
+        "info": "Shopify product title exactly, e.g. Khawab.",
         "visible_if": "{{ settings.size_chart_count >= 7 }}"
       },
       {
         "type": "image_picker",
         "id": "size_chart_image_7",
         "label": "Size chart for product 7",
-        "info": "Ye isi product ka size chart hai jiska name upar select hai.",
+        "info": "Ye isi product ka size chart hai jiska name upar likha hai.",
         "visible_if": "{{ settings.size_chart_count >= 7 }}"
       },
       {
@@ -209,17 +209,17 @@
         "visible_if": "{{ settings.size_chart_count >= 8 }}"
       },
       {
-        "type": "product",
-        "id": "size_chart_product_8",
+        "type": "text",
+        "id": "size_chart_name_8",
         "label": "Product 8 name",
-        "info": "Product select karo — upar uska name aa jayega ke ye chart kis ka hai.",
+        "info": "Shopify product title exactly, e.g. Khawab.",
         "visible_if": "{{ settings.size_chart_count >= 8 }}"
       },
       {
         "type": "image_picker",
         "id": "size_chart_image_8",
         "label": "Size chart for product 8",
-        "info": "Ye isi product ka size chart hai jiska name upar select hai.",
+        "info": "Ye isi product ka size chart hai jiska name upar likha hai.",
         "visible_if": "{{ settings.size_chart_count >= 8 }}"
       },
       {
@@ -228,17 +228,17 @@
         "visible_if": "{{ settings.size_chart_count >= 9 }}"
       },
       {
-        "type": "product",
-        "id": "size_chart_product_9",
+        "type": "text",
+        "id": "size_chart_name_9",
         "label": "Product 9 name",
-        "info": "Product select karo — upar uska name aa jayega ke ye chart kis ka hai.",
+        "info": "Shopify product title exactly, e.g. Khawab.",
         "visible_if": "{{ settings.size_chart_count >= 9 }}"
       },
       {
         "type": "image_picker",
         "id": "size_chart_image_9",
         "label": "Size chart for product 9",
-        "info": "Ye isi product ka size chart hai jiska name upar select hai.",
+        "info": "Ye isi product ka size chart hai jiska name upar likha hai.",
         "visible_if": "{{ settings.size_chart_count >= 9 }}"
       },
       {
@@ -247,17 +247,17 @@
         "visible_if": "{{ settings.size_chart_count >= 10 }}"
       },
       {
-        "type": "product",
-        "id": "size_chart_product_10",
+        "type": "text",
+        "id": "size_chart_name_10",
         "label": "Product 10 name",
-        "info": "Product select karo — upar uska name aa jayega ke ye chart kis ka hai.",
+        "info": "Shopify product title exactly, e.g. Khawab.",
         "visible_if": "{{ settings.size_chart_count >= 10 }}"
       },
       {
         "type": "image_picker",
         "id": "size_chart_image_10",
         "label": "Size chart for product 10",
-        "info": "Ye isi product ka size chart hai jiska name upar select hai.",
+        "info": "Ye isi product ka size chart hai jiska name upar likha hai.",
         "visible_if": "{{ settings.size_chart_count >= 10 }}"
       },
       {
@@ -266,17 +266,17 @@
         "visible_if": "{{ settings.size_chart_count >= 11 }}"
       },
       {
-        "type": "product",
-        "id": "size_chart_product_11",
+        "type": "text",
+        "id": "size_chart_name_11",
         "label": "Product 11 name",
-        "info": "Product select karo — upar uska name aa jayega ke ye chart kis ka hai.",
+        "info": "Shopify product title exactly, e.g. Khawab.",
         "visible_if": "{{ settings.size_chart_count >= 11 }}"
       },
       {
         "type": "image_picker",
         "id": "size_chart_image_11",
         "label": "Size chart for product 11",
-        "info": "Ye isi product ka size chart hai jiska name upar select hai.",
+        "info": "Ye isi product ka size chart hai jiska name upar likha hai.",
         "visible_if": "{{ settings.size_chart_count >= 11 }}"
       },
       {
@@ -285,17 +285,17 @@
         "visible_if": "{{ settings.size_chart_count >= 12 }}"
       },
       {
-        "type": "product",
-        "id": "size_chart_product_12",
+        "type": "text",
+        "id": "size_chart_name_12",
         "label": "Product 12 name",
-        "info": "Product select karo — upar uska name aa jayega ke ye chart kis ka hai.",
+        "info": "Shopify product title exactly, e.g. Khawab.",
         "visible_if": "{{ settings.size_chart_count >= 12 }}"
       },
       {
         "type": "image_picker",
         "id": "size_chart_image_12",
         "label": "Size chart for product 12",
-        "info": "Ye isi product ka size chart hai jiska name upar select hai.",
+        "info": "Ye isi product ka size chart hai jiska name upar likha hai.",
         "visible_if": "{{ settings.size_chart_count >= 12 }}"
       },
       {
@@ -304,17 +304,17 @@
         "visible_if": "{{ settings.size_chart_count >= 13 }}"
       },
       {
-        "type": "product",
-        "id": "size_chart_product_13",
+        "type": "text",
+        "id": "size_chart_name_13",
         "label": "Product 13 name",
-        "info": "Product select karo — upar uska name aa jayega ke ye chart kis ka hai.",
+        "info": "Shopify product title exactly, e.g. Khawab.",
         "visible_if": "{{ settings.size_chart_count >= 13 }}"
       },
       {
         "type": "image_picker",
         "id": "size_chart_image_13",
         "label": "Size chart for product 13",
-        "info": "Ye isi product ka size chart hai jiska name upar select hai.",
+        "info": "Ye isi product ka size chart hai jiska name upar likha hai.",
         "visible_if": "{{ settings.size_chart_count >= 13 }}"
       },
       {
@@ -323,17 +323,17 @@
         "visible_if": "{{ settings.size_chart_count >= 14 }}"
       },
       {
-        "type": "product",
-        "id": "size_chart_product_14",
+        "type": "text",
+        "id": "size_chart_name_14",
         "label": "Product 14 name",
-        "info": "Product select karo — upar uska name aa jayega ke ye chart kis ka hai.",
+        "info": "Shopify product title exactly, e.g. Khawab.",
         "visible_if": "{{ settings.size_chart_count >= 14 }}"
       },
       {
         "type": "image_picker",
         "id": "size_chart_image_14",
         "label": "Size chart for product 14",
-        "info": "Ye isi product ka size chart hai jiska name upar select hai.",
+        "info": "Ye isi product ka size chart hai jiska name upar likha hai.",
         "visible_if": "{{ settings.size_chart_count >= 14 }}"
       },
       {
@@ -342,17 +342,17 @@
         "visible_if": "{{ settings.size_chart_count >= 15 }}"
       },
       {
-        "type": "product",
-        "id": "size_chart_product_15",
+        "type": "text",
+        "id": "size_chart_name_15",
         "label": "Product 15 name",
-        "info": "Product select karo — upar uska name aa jayega ke ye chart kis ka hai.",
+        "info": "Shopify product title exactly, e.g. Khawab.",
         "visible_if": "{{ settings.size_chart_count >= 15 }}"
       },
       {
         "type": "image_picker",
         "id": "size_chart_image_15",
         "label": "Size chart for product 15",
-        "info": "Ye isi product ka size chart hai jiska name upar select hai.",
+        "info": "Ye isi product ka size chart hai jiska name upar likha hai.",
         "visible_if": "{{ settings.size_chart_count >= 15 }}"
       },
       {
@@ -361,17 +361,17 @@
         "visible_if": "{{ settings.size_chart_count >= 16 }}"
       },
       {
-        "type": "product",
-        "id": "size_chart_product_16",
+        "type": "text",
+        "id": "size_chart_name_16",
         "label": "Product 16 name",
-        "info": "Product select karo — upar uska name aa jayega ke ye chart kis ka hai.",
+        "info": "Shopify product title exactly, e.g. Khawab.",
         "visible_if": "{{ settings.size_chart_count >= 16 }}"
       },
       {
         "type": "image_picker",
         "id": "size_chart_image_16",
         "label": "Size chart for product 16",
-        "info": "Ye isi product ka size chart hai jiska name upar select hai.",
+        "info": "Ye isi product ka size chart hai jiska name upar likha hai.",
         "visible_if": "{{ settings.size_chart_count >= 16 }}"
       },
       {
@@ -380,17 +380,17 @@
         "visible_if": "{{ settings.size_chart_count >= 17 }}"
       },
       {
-        "type": "product",
-        "id": "size_chart_product_17",
+        "type": "text",
+        "id": "size_chart_name_17",
         "label": "Product 17 name",
-        "info": "Product select karo — upar uska name aa jayega ke ye chart kis ka hai.",
+        "info": "Shopify product title exactly, e.g. Khawab.",
         "visible_if": "{{ settings.size_chart_count >= 17 }}"
       },
       {
         "type": "image_picker",
         "id": "size_chart_image_17",
         "label": "Size chart for product 17",
-        "info": "Ye isi product ka size chart hai jiska name upar select hai.",
+        "info": "Ye isi product ka size chart hai jiska name upar likha hai.",
         "visible_if": "{{ settings.size_chart_count >= 17 }}"
       },
       {
@@ -399,17 +399,17 @@
         "visible_if": "{{ settings.size_chart_count >= 18 }}"
       },
       {
-        "type": "product",
-        "id": "size_chart_product_18",
+        "type": "text",
+        "id": "size_chart_name_18",
         "label": "Product 18 name",
-        "info": "Product select karo — upar uska name aa jayega ke ye chart kis ka hai.",
+        "info": "Shopify product title exactly, e.g. Khawab.",
         "visible_if": "{{ settings.size_chart_count >= 18 }}"
       },
       {
         "type": "image_picker",
         "id": "size_chart_image_18",
         "label": "Size chart for product 18",
-        "info": "Ye isi product ka size chart hai jiska name upar select hai.",
+        "info": "Ye isi product ka size chart hai jiska name upar likha hai.",
         "visible_if": "{{ settings.size_chart_count >= 18 }}"
       },
       {
@@ -418,17 +418,17 @@
         "visible_if": "{{ settings.size_chart_count >= 19 }}"
       },
       {
-        "type": "product",
-        "id": "size_chart_product_19",
+        "type": "text",
+        "id": "size_chart_name_19",
         "label": "Product 19 name",
-        "info": "Product select karo — upar uska name aa jayega ke ye chart kis ka hai.",
+        "info": "Shopify product title exactly, e.g. Khawab.",
         "visible_if": "{{ settings.size_chart_count >= 19 }}"
       },
       {
         "type": "image_picker",
         "id": "size_chart_image_19",
         "label": "Size chart for product 19",
-        "info": "Ye isi product ka size chart hai jiska name upar select hai.",
+        "info": "Ye isi product ka size chart hai jiska name upar likha hai.",
         "visible_if": "{{ settings.size_chart_count >= 19 }}"
       },
       {
@@ -437,17 +437,17 @@
         "visible_if": "{{ settings.size_chart_count >= 20 }}"
       },
       {
-        "type": "product",
-        "id": "size_chart_product_20",
+        "type": "text",
+        "id": "size_chart_name_20",
         "label": "Product 20 name",
-        "info": "Product select karo — upar uska name aa jayega ke ye chart kis ka hai.",
+        "info": "Shopify product title exactly, e.g. Khawab.",
         "visible_if": "{{ settings.size_chart_count >= 20 }}"
       },
       {
         "type": "image_picker",
         "id": "size_chart_image_20",
         "label": "Size chart for product 20",
-        "info": "Ye isi product ka size chart hai jiska name upar select hai.",
+        "info": "Ye isi product ka size chart hai jiska name upar likha hai.",
         "visible_if": "{{ settings.size_chart_count >= 20 }}"
       },
       {
