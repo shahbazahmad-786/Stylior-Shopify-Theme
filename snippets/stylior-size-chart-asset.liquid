@@ -4,7 +4,7 @@
   Matching order:
   1. Block/section override image
   2. Product metafield custom.size_chart (image)
-  3. Theme settings product-name + chart pairs
+  3. Theme settings product dropdown + chart pairs
   4. Single uploaded theme-settings chart (when only one is set)
   5. Fallback theme-settings chart
 
@@ -24,84 +24,74 @@
     assign chart_image = product.metafields.custom.size_chart.value | default: product.metafields.custom.size_chart
   endif
 
-  assign mapped_count = settings.size_chart_count | default: 1 | times: 1
-  if mapped_count < 1
-    assign mapped_count = 1
-  endif
-  if mapped_count > 20
-    assign mapped_count = 20
-  endif
-
   if chart_image == blank and product != blank
     assign filled_images = 0
-    assign product_title_down = product.title | downcase | strip
-    assign product_handle_down = product.handle | downcase
 
     for i in (1..20)
-      if i > mapped_count
-        break
-      endif
+      assign mapped_image = ''
+      assign mapped_product = ''
+      assign mapped_url = ''
 
       case i
       when 1
-        assign mapped_name = settings.size_chart_name_1
+        assign mapped_product = settings.size_chart_product_1
         assign mapped_image = settings.size_chart_image_1
       when 2
-        assign mapped_name = settings.size_chart_name_2
+        assign mapped_url = settings.size_chart_product_2
         assign mapped_image = settings.size_chart_image_2
       when 3
-        assign mapped_name = settings.size_chart_name_3
+        assign mapped_url = settings.size_chart_product_3
         assign mapped_image = settings.size_chart_image_3
       when 4
-        assign mapped_name = settings.size_chart_name_4
+        assign mapped_url = settings.size_chart_product_4
         assign mapped_image = settings.size_chart_image_4
       when 5
-        assign mapped_name = settings.size_chart_name_5
+        assign mapped_url = settings.size_chart_product_5
         assign mapped_image = settings.size_chart_image_5
       when 6
-        assign mapped_name = settings.size_chart_name_6
+        assign mapped_url = settings.size_chart_product_6
         assign mapped_image = settings.size_chart_image_6
       when 7
-        assign mapped_name = settings.size_chart_name_7
+        assign mapped_url = settings.size_chart_product_7
         assign mapped_image = settings.size_chart_image_7
       when 8
-        assign mapped_name = settings.size_chart_name_8
+        assign mapped_url = settings.size_chart_product_8
         assign mapped_image = settings.size_chart_image_8
       when 9
-        assign mapped_name = settings.size_chart_name_9
+        assign mapped_url = settings.size_chart_product_9
         assign mapped_image = settings.size_chart_image_9
       when 10
-        assign mapped_name = settings.size_chart_name_10
+        assign mapped_url = settings.size_chart_product_10
         assign mapped_image = settings.size_chart_image_10
       when 11
-        assign mapped_name = settings.size_chart_name_11
+        assign mapped_url = settings.size_chart_product_11
         assign mapped_image = settings.size_chart_image_11
       when 12
-        assign mapped_name = settings.size_chart_name_12
+        assign mapped_url = settings.size_chart_product_12
         assign mapped_image = settings.size_chart_image_12
       when 13
-        assign mapped_name = settings.size_chart_name_13
+        assign mapped_url = settings.size_chart_product_13
         assign mapped_image = settings.size_chart_image_13
       when 14
-        assign mapped_name = settings.size_chart_name_14
+        assign mapped_url = settings.size_chart_product_14
         assign mapped_image = settings.size_chart_image_14
       when 15
-        assign mapped_name = settings.size_chart_name_15
+        assign mapped_url = settings.size_chart_product_15
         assign mapped_image = settings.size_chart_image_15
       when 16
-        assign mapped_name = settings.size_chart_name_16
+        assign mapped_url = settings.size_chart_product_16
         assign mapped_image = settings.size_chart_image_16
       when 17
-        assign mapped_name = settings.size_chart_name_17
+        assign mapped_url = settings.size_chart_product_17
         assign mapped_image = settings.size_chart_image_17
       when 18
-        assign mapped_name = settings.size_chart_name_18
+        assign mapped_url = settings.size_chart_product_18
         assign mapped_image = settings.size_chart_image_18
       when 19
-        assign mapped_name = settings.size_chart_name_19
+        assign mapped_url = settings.size_chart_product_19
         assign mapped_image = settings.size_chart_image_19
       when 20
-        assign mapped_name = settings.size_chart_name_20
+        assign mapped_url = settings.size_chart_product_20
         assign mapped_image = settings.size_chart_image_20
       endcase
 
@@ -111,23 +101,23 @@
 
       assign filled_images = filled_images | plus: 1
       assign only_mapped_image = mapped_image
-      assign mapped_name = mapped_name | strip
+      assign slot_matched = false
 
-      if mapped_name == blank
-        continue
+      if mapped_product != blank
+        if mapped_product.id == product.id or mapped_product.handle == product.handle
+          assign slot_matched = true
+        endif
+      elsif mapped_url != blank
+        assign mapped_handle = mapped_url | split: '/products/' | last | split: '?' | first | split: '/' | first
+        if mapped_url contains 'shopify://products/'
+          assign mapped_handle = mapped_url | remove: 'shopify://products/' | split: '?' | first | split: '/' | first
+        endif
+        if mapped_handle == product.handle or product.url == mapped_url
+          assign slot_matched = true
+        endif
       endif
 
-      assign mapped_name_down = mapped_name | downcase
-      assign mapped_handle = mapped_name | handleize
-      assign name_matched = false
-
-      if product_handle_down == mapped_handle or product_title_down == mapped_name_down
-        assign name_matched = true
-      elsif product_title_down contains mapped_name_down or product_handle_down contains mapped_handle
-        assign name_matched = true
-      endif
-
-      if name_matched
+      if slot_matched
         assign chart_image = mapped_image
         break
       endif
