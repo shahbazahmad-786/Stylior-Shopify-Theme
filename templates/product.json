@@ -340,7 +340,7 @@
                   "type": "add-to-cart",
                   "static": true,
                   "settings": {
-                    "style_class": "button",
+                    "style_class": "button-secondary",
                     "custom_button_background": "{{ settings.color_palette.foreground }}",
                     "custom_button_text": "{{ settings.color_palette.background }}",
                     "custom_button_border": "{{ settings.color_palette.background }}"
@@ -349,7 +349,6 @@
                 },
                 "accelerated-checkout": {
                   "type": "accelerated-checkout",
-                  "disabled": true,
                   "static": true,
                   "settings": {},
                   "blocks": {}
@@ -722,7 +721,7 @@
         "icons_shape": "none",
         "section_width": "page-width",
         "gap": 28,
-        "background_color": "#FFF5EB",
+        "background_color": "#fff5eb",
         "padding-block-start": 24,
         "padding-block-end": 24
       }
