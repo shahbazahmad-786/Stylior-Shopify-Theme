@@ -10,9 +10,47 @@
 {
   "sections": {
     "stylior_hero": {
-      "type": "stylior-hero-video",
+      "type": "stylior-hero-carousel",
+      "blocks": {
+        "slide_1": {
+          "type": "slide",
+          "settings": {
+            "overlay_heading": "KHAWAB",
+            "overlay_script": "Khawab",
+            "heading": "Khawab Article",
+            "text": "Discover the bestsellers that have captured the hearts of our customers with their perfect blend of functionality and style.",
+            "button_label": "Shop now"
+          }
+        },
+        "slide_2": {
+          "type": "slide",
+          "settings": {
+            "overlay_heading": "BHAROSA",
+            "overlay_script": "Bharosa",
+            "heading": "Bharosa Collection",
+            "text": "Discover the bestsellers that have captured the hearts of our customers with their perfect blend of functionality and style.",
+            "button_label": "Shop now"
+          }
+        },
+        "slide_3": {
+          "type": "slide",
+          "settings": {
+            "overlay_heading": "STYLIOR",
+            "overlay_script": "Stylior",
+            "heading": "New Arrivals",
+            "text": "Discover the bestsellers that have captured the hearts of our customers with their perfect blend of functionality and style.",
+            "button_label": "Shop now"
+          }
+        }
+      },
+      "block_order": [
+        "slide_1",
+        "slide_2",
+        "slide_3"
+      ],
       "settings": {
-        "min_height": 90
+        "autoplay": true,
+        "autoplay_speed": 5
       }
     },
     "product_list_styles": {

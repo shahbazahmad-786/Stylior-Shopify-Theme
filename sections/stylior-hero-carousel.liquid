@@ -1,0 +1,411 @@
+{% comment %}
+  Stylior hero carousel — peek slides, overlay titles, content + link per item
+{% endcomment %}
+
+{%- liquid
+  assign slide_count = section.blocks.size
+  assign autoplay = false
+  if section.settings.autoplay and slide_count > 1
+    assign autoplay = true
+  endif
+-%}
+
+<section
+  class="stylior-hero-carousel"
+  id="stylior-hero-carousel-{{ section.id }}"
+  data-autoplay="{% if autoplay %}true{% else %}false{% endif %}"
+  data-autoplay-speed="{{ section.settings.autoplay_speed | times: 1000 }}"
+  aria-roledescription="carousel"
+  aria-label="Featured collections"
+>
+  {%- if slide_count == 0 -%}
+    <div class="stylior-hero-carousel__stage">
+      <div class="stylior-hero-carousel__viewport">
+        <article class="stylior-hero-carousel__slide is-active">
+          <div class="stylior-hero-carousel__media">
+            <div class="stylior-hero-carousel__placeholder" aria-hidden="true"></div>
+            <div class="stylior-hero-carousel__overlay">
+              <span class="stylior-hero-carousel__script">Khawab</span>
+              <p class="stylior-hero-carousel__brand">KHAWAB</p>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+    <div class="stylior-hero-carousel__copy">
+      <div class="stylior-hero-carousel__panel is-active">
+        <h2 class="stylior-hero-carousel__title">Khawab Article</h2>
+        <p class="stylior-hero-carousel__text">Add slides in the theme editor — each one can have its own image, text, and link.</p>
+      </div>
+    </div>
+  {%- else -%}
+    <div class="stylior-hero-carousel__stage">
+      {%- if slide_count > 1 -%}
+        <button
+          type="button"
+          class="stylior-hero-carousel__nav stylior-hero-carousel__nav--prev"
+          aria-label="Previous slide"
+          data-hero-prev
+        >
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      {%- endif -%}
+
+      <div class="stylior-hero-carousel__viewport" data-hero-track>
+        {%- for block in section.blocks -%}
+          {%- liquid
+            assign slide_alt = block.settings.overlay_heading | default: block.settings.heading | default: 'Hero slide'
+            if forloop.first
+              assign img_loading = 'eager'
+              assign img_priority = 'high'
+            else
+              assign img_loading = 'lazy'
+              assign img_priority = 'auto'
+            endif
+          -%}
+          <article
+            class="stylior-hero-carousel__slide{% if forloop.first %} is-active{% endif %}"
+            {{ block.shopify_attributes }}
+            data-hero-slide
+            data-index="{{ forloop.index0 }}"
+            aria-label="Slide {{ forloop.index }}"
+            {% unless forloop.first %}aria-hidden="true"{% endunless %}
+          >
+            <div class="stylior-hero-carousel__media">
+              {%- if block.settings.link != blank -%}
+                <a
+                  class="stylior-hero-carousel__media-link"
+                  href="{{ block.settings.link }}"
+                  aria-label="{{ slide_alt | escape }}"
+                >
+              {%- endif -%}
+
+              {%- if block.settings.image != blank -%}
+                {{
+                  block.settings.image
+                  | image_url: width: 2400
+                  | image_tag:
+                    class: 'stylior-hero-carousel__img',
+                    loading: img_loading,
+                    fetchpriority: img_priority,
+                    widths: '600, 900, 1200, 1600, 2000, 2400',
+                    sizes: '(min-width: 750px) 86vw, 92vw',
+                    alt: block.settings.image.alt | default: slide_alt
+                }}
+              {%- else -%}
+                <div class="stylior-hero-carousel__placeholder" aria-hidden="true"></div>
+              {%- endif -%}
+
+              {%- if block.settings.link != blank -%}
+                </a>
+              {%- endif -%}
+
+              {%- if block.settings.overlay_heading != blank or block.settings.overlay_script != blank -%}
+                <div class="stylior-hero-carousel__overlay">
+                  {%- if block.settings.overlay_script != blank -%}
+                    <span class="stylior-hero-carousel__script">{{ block.settings.overlay_script }}</span>
+                  {%- endif -%}
+                  {%- if block.settings.overlay_heading != blank -%}
+                    <p class="stylior-hero-carousel__brand">{{ block.settings.overlay_heading }}</p>
+                  {%- endif -%}
+                </div>
+              {%- endif -%}
+            </div>
+          </article>
+        {%- endfor -%}
+      </div>
+
+      {%- if slide_count > 1 -%}
+        <button
+          type="button"
+          class="stylior-hero-carousel__nav stylior-hero-carousel__nav--next"
+          aria-label="Next slide"
+          data-hero-next
+        >
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      {%- endif -%}
+    </div>
+
+    <div class="stylior-hero-carousel__copy" data-hero-copy aria-live="polite">
+      {%- for block in section.blocks -%}
+        <div
+          class="stylior-hero-carousel__panel{% if forloop.first %} is-active{% endif %}"
+          data-hero-panel
+          data-index="{{ forloop.index0 }}"
+          {% unless forloop.first %}hidden{% endunless %}
+        >
+          {%- if block.settings.heading != blank -%}
+            <h2 class="stylior-hero-carousel__title">{{ block.settings.heading }}</h2>
+          {%- endif -%}
+          {%- if block.settings.text != blank -%}
+            <p class="stylior-hero-carousel__text">{{ block.settings.text }}</p>
+          {%- endif -%}
+          {%- if block.settings.link != blank -%}
+            <a class="stylior-hero-carousel__cta" href="{{ block.settings.link }}">
+              {{ block.settings.button_label | default: 'Shop now' }}
+            </a>
+          {%- endif -%}
+        </div>
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
+</section>
+
+{%- if slide_count > 0 -%}
+  <script>
+    (function () {
+      var root = document.getElementById('stylior-hero-carousel-{{ section.id }}');
+      if (!root) return;
+
+      var track = root.querySelector('[data-hero-track]');
+      var slides = Array.prototype.slice.call(root.querySelectorAll('[data-hero-slide]'));
+      var panels = Array.prototype.slice.call(root.querySelectorAll('[data-hero-panel]'));
+      var prev = root.querySelector('[data-hero-prev]');
+      var next = root.querySelector('[data-hero-next]');
+      if (!track || !slides.length) return;
+
+      var active = 0;
+      var autoplay = root.getAttribute('data-autoplay') === 'true';
+      var speed = parseInt(root.getAttribute('data-autoplay-speed'), 10) || 5000;
+      var timer = null;
+      var scrollTimer = null;
+
+      function clampIndex(i) {
+        var total = slides.length;
+        return ((i % total) + total) % total;
+      }
+
+      function goTo(index, instant) {
+        var i = clampIndex(index);
+        var slide = slides[i];
+        if (!slide) return;
+        var left = slide.offsetLeft - (track.clientWidth - slide.offsetWidth) / 2;
+        track.scrollTo({ left: left, behavior: instant ? 'auto' : 'smooth' });
+        setActive(i);
+      }
+
+      function setActive(index) {
+        if (index === active && slides[index] && slides[index].classList.contains('is-active')) {
+          return;
+        }
+        active = index;
+        slides.forEach(function (slide, i) {
+          var on = i === index;
+          slide.classList.toggle('is-active', on);
+          slide.setAttribute('aria-hidden', on ? 'false' : 'true');
+        });
+        panels.forEach(function (panel, i) {
+          var on = i === index;
+          panel.classList.toggle('is-active', on);
+          if (on) panel.removeAttribute('hidden');
+          else panel.setAttribute('hidden', '');
+        });
+      }
+
+      function closestIndex() {
+        var center = track.scrollLeft + track.clientWidth / 2;
+        var best = 0;
+        var min = Infinity;
+        slides.forEach(function (slide, i) {
+          var c = slide.offsetLeft + slide.offsetWidth / 2;
+          var d = Math.abs(c - center);
+          if (d < min) {
+            min = d;
+            best = i;
+          }
+        });
+        return best;
+      }
+
+      function startAutoplay() {
+        stopAutoplay();
+        if (!autoplay || slides.length < 2) return;
+        timer = window.setInterval(function () {
+          goTo(active + 1);
+        }, speed);
+      }
+
+      function stopAutoplay() {
+        if (timer) {
+          window.clearInterval(timer);
+          timer = null;
+        }
+      }
+
+      if (prev) {
+        prev.addEventListener('click', function () {
+          goTo(active - 1);
+          startAutoplay();
+        });
+      }
+      if (next) {
+        next.addEventListener('click', function () {
+          goTo(active + 1);
+          startAutoplay();
+        });
+      }
+
+      track.addEventListener(
+        'scroll',
+        function () {
+          window.clearTimeout(scrollTimer);
+          scrollTimer = window.setTimeout(function () {
+            setActive(closestIndex());
+          }, 60);
+        },
+        { passive: true }
+      );
+
+      root.addEventListener('mouseenter', stopAutoplay);
+      root.addEventListener('mouseleave', startAutoplay);
+      root.addEventListener('focusin', stopAutoplay);
+      root.addEventListener('focusout', startAutoplay);
+      track.addEventListener('pointerdown', stopAutoplay);
+
+      document.addEventListener('shopify:block:select', function (event) {
+        if (!root.contains(event.target)) return;
+        var slide = event.target.closest('[data-hero-slide]');
+        if (!slide) return;
+        goTo(parseInt(slide.getAttribute('data-index'), 10) || 0, true);
+        stopAutoplay();
+      });
+
+      document.addEventListener('shopify:section:unload', function (event) {
+        if (event.target.contains(root) || event.target === root) stopAutoplay();
+      });
+
+      window.addEventListener('resize', function () {
+        goTo(active, true);
+      });
+
+      goTo(0, true);
+      startAutoplay();
+    })();
+  </script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Stylior hero carousel",
+  "tag": "section",
+  "class": "section-stylior-hero-carousel",
+  "max_blocks": 50,
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Auto-rotate slides",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "autoplay_speed",
+      "min": 3,
+      "max": 10,
+      "step": 1,
+      "unit": "s",
+      "label": "Change slides every",
+      "default": 5
+    }
+  ],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Slide",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "header",
+          "content": "On-image text"
+        },
+        {
+          "type": "text",
+          "id": "overlay_heading",
+          "label": "Overlay heading",
+          "default": "KHAWAB"
+        },
+        {
+          "type": "text",
+          "id": "overlay_script",
+          "label": "Overlay script",
+          "default": "Khawab"
+        },
+        {
+          "type": "header",
+          "content": "Content below"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Khawab Article"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Text",
+          "default": "Discover the bestsellers that have captured the hearts of our customers with their perfect blend of functionality and style."
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link",
+          "info": "Used for the image and the Shop now button."
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button label",
+          "default": "Shop now"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Stylior hero carousel",
+      "blocks": [
+        {
+          "type": "slide",
+          "settings": {
+            "overlay_heading": "KHAWAB",
+            "overlay_script": "Khawab",
+            "heading": "Khawab Article",
+            "text": "Discover the bestsellers that have captured the hearts of our customers with their perfect blend of functionality and style.",
+            "button_label": "Shop now"
+          }
+        },
+        {
+          "type": "slide",
+          "settings": {
+            "overlay_heading": "BHAROSA",
+            "overlay_script": "Bharosa",
+            "heading": "Bharosa Collection",
+            "text": "Discover the bestsellers that have captured the hearts of our customers with their perfect blend of functionality and style.",
+            "button_label": "Shop now"
+          }
+        },
+        {
+          "type": "slide",
+          "settings": {
+            "overlay_heading": "STYLIOR",
+            "overlay_script": "Stylior",
+            "heading": "New Arrivals",
+            "text": "Discover the bestsellers that have captured the hearts of our customers with their perfect blend of functionality and style.",
+            "button_label": "Shop now"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
