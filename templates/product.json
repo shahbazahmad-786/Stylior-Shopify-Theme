@@ -290,9 +290,7 @@
               "name": "Stylior size chart",
               "settings": {
                 "button_label": "Size chart",
-                "heading": "Size chart",
-                "image": "shopify://shop_images/size_chart_shirrt_bharosa_black.png",
-                "force_chart": "auto"
+                "heading": "Size chart"
               },
               "blocks": {}
             },
