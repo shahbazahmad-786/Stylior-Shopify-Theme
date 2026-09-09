@@ -9,17 +9,17 @@
     assign force_key = ''
   endif
 
-  capture chart_meta
-    render 'stylior-size-chart-asset', product: product, force_key: force_key
-  endcapture
-  assign chart_parts = chart_meta | strip | split: '||'
-  assign chart_file = chart_parts[0] | strip
-  assign chart_label = chart_parts[1] | default: 'Size chart' | strip
-  assign chart_src = chart_file | asset_url
+  assign chart_alt = block.settings.heading | default: 'Size chart'
+  if product != blank
+    assign chart_alt = chart_alt | append: ' — ' | append: product.title
+  endif
   assign modal_id = 'stylior-size-chart-' | append: block.id
 %}
 
-{% if product != blank %}
+{% capture chart_img_html %}{% render 'stylior-size-chart-asset', product: product, force_key: force_key, override_image: block.settings.image, class: 'stylior-size-chart__img', alt: chart_alt %}{% endcapture %}
+{% assign chart_img_html = chart_img_html | strip %}
+
+{% if product != blank and chart_img_html != blank %}
   <div
     class="stylior-size-chart stylior-size-chart--block"
     id="{{ modal_id }}-wrap"
@@ -52,7 +52,7 @@
       <div class="stylior-size-chart__panel">
         <div class="stylior-size-chart__header">
           <h2 class="stylior-size-chart__title" id="{{ modal_id }}-title">
-            {{ block.settings.heading | default: chart_label }}
+            {{ block.settings.heading | default: 'Size chart' }}
           </h2>
           <button
             type="button"
@@ -64,14 +64,7 @@
           </button>
         </div>
         <div class="stylior-size-chart__body">
-          <img
-            class="stylior-size-chart__img"
-            src="{{ chart_src }}"
-            alt="{{ chart_label | escape }} — {{ product.title | escape }}"
-            loading="lazy"
-            width="1400"
-            height="1800"
-          >
+          {{ chart_img_html }}
         </div>
       </div>
     </div>
@@ -130,6 +123,12 @@
       "default": "Size chart"
     },
     {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Custom chart image",
+      "info": "Optional. Overrides Theme settings and product matching for this block."
+    },
+    {
       "type": "select",
       "id": "force_chart",
       "label": "Force chart (optional)",
@@ -141,7 +140,7 @@
         { "value": "khawab", "label": "Khawab" }
       ],
       "default": "auto",
-      "info": "Auto matches product title/handle/tags: Bharosa, Khawab, Black, White"
+      "info": "Uses charts uploaded in Theme settings > Size charts. Auto matches product title/handle/tags."
     }
   ],
   "presets": [

@@ -1,14 +1,9 @@
 <section class="stylior-campaign" id="stylior-campaign-{{ section.id }}">
   <div class="stylior-campaign__grid">
-    {% liquid
-      assign fallback_assets = 'stylior-banner-bharosa.png,stylior-banner-2.png,stylior-banner-bharosa.png' | split: ','
-    %}
     {% for i in (1..3) %}
       {% liquid
         assign image_key = 'image_' | append: i
         assign image = section.settings[image_key]
-        assign fallback_index = i | minus: 1
-        assign fallback_file = fallback_assets[fallback_index]
       %}
       <div class="stylior-campaign__cell">
         {% if image != blank %}
@@ -18,13 +13,7 @@
             | image_tag: loading: 'lazy', widths: '400, 600, 900', sizes: '(min-width: 750px) 33vw, 100vw', alt: image.alt
           }}
         {% else %}
-          <img
-            src="{{ fallback_file | asset_url }}"
-            alt="{{ section.settings.title | escape }}"
-            loading="lazy"
-            width="900"
-            height="1200"
-          >
+          <div class="stylior-campaign__placeholder" aria-hidden="true"></div>
         {% endif %}
       </div>
     {% endfor %}

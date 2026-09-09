@@ -16,14 +16,7 @@
           alt: section.settings.image.alt | default: shop.name
       }}
     {% else %}
-      <img
-        class="stylior-callouts__image"
-        src="{{ 'stylior-banner-2.png' | asset_url }}"
-        alt="{{ shop.name | escape }}"
-        loading="eager"
-        width="1400"
-        height="1750"
-      >
+      <div class="stylior-callouts__image stylior-callouts__image--placeholder" aria-hidden="true"></div>
     {% endif %}
 
     {% for block in section.blocks %}

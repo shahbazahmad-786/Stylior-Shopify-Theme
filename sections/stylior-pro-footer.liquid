@@ -78,14 +78,7 @@
                 alt: shop.name
             }}
           {% else %}
-            <img
-              class="stylior-pro-footer__logo-img"
-              src="{{ 'stylior-logo-white.png' | asset_url }}"
-              alt="{{ shop.name | escape }}"
-              width="160"
-              height="40"
-              loading="lazy"
-            >
+            <span class="stylior-pro-footer__logo-text">{{ shop.name }}</span>
           {% endif %}
         </a>
         {% if section.settings.tagline != blank %}

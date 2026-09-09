@@ -27,19 +27,7 @@
             | image_tag: loading: 'lazy', widths: '400, 700, 1000, 1200', sizes: '(min-width: 750px) 50vw, 100vw', alt: image.alt
           }}
         {% else %}
-          {% liquid
-            assign dual_fallback = 'stylior-banner-bharosa.png'
-            if forloop.index == 2
-              assign dual_fallback = 'stylior-banner-2.png'
-            endif
-          %}
-          <img
-            src="{{ dual_fallback | asset_url }}"
-            alt="{{ collection.title | default: 'Stylior collection' | escape }}"
-            loading="lazy"
-            width="1200"
-            height="1500"
-          >
+          <div class="stylior-dual__placeholder" aria-hidden="true"></div>
         {% endif %}
       </a>
     {% endfor %}

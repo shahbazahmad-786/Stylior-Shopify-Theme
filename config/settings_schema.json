@@ -57,6 +57,35 @@
     ]
   },
   {
+    "name": "Size charts",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Upload size-chart images here. The product page picks a chart automatically from the product name, tags, or the custom.size_chart_key metafield. You can also attach a custom.size_chart image metafield on a product to override these."
+      },
+      {
+        "type": "image_picker",
+        "id": "size_chart_default",
+        "label": "Default size chart"
+      },
+      {
+        "type": "image_picker",
+        "id": "size_chart_bharosa_black",
+        "label": "Bharosa black size chart"
+      },
+      {
+        "type": "image_picker",
+        "id": "size_chart_bharosa_white",
+        "label": "Bharosa white size chart"
+      },
+      {
+        "type": "image_picker",
+        "id": "size_chart_khawab",
+        "label": "Khawab size chart"
+      }
+    ]
+  },
+  {
     "name": "t:names.colors",
     "settings": [
       {

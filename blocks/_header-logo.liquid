@@ -79,15 +79,7 @@
         style: logo_style
       %}
     {% else %}
-      <img
-        class="header-logo__image"
-        src="{{ 'stylior-logo-white.png' | asset_url }}"
-        alt="{{ alt_text_fallback | escape }}"
-        width="{{ logo_width }}"
-        height="{{ logo_height }}"
-        style="{{ logo_style }}"
-        loading="eager"
-      >
+      <span class="header-logo__text">{{ shop.name }}</span>
     {% endif %}
   </span>
 
@@ -106,15 +98,7 @@
           style: inverse_logo_style
         %}
       {% else %}
-        <img
-          class="header-logo__image"
-          src="{{ 'stylior-logo-black.png' | asset_url }}"
-          alt="{{ alt_text_fallback | escape }}"
-          width="{{ inverse_logo_width }}"
-          height="{{ logo_height }}"
-          style="{{ inverse_logo_style }}"
-          loading="eager"
-        >
+        <span class="header-logo__text">{{ shop.name }}</span>
       {% endif %}
     </span>
   {% endif %}
@@ -156,6 +140,13 @@
     &:hover {
       text-decoration: none;
     }
+  }
+
+  .header-logo__text {
+    display: inline-block;
+    white-space: nowrap;
+    font-size: var(--font-size--md, 1rem);
+    font-weight: 600;
   }
 
   .header-logo__image {

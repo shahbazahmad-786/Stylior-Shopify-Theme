@@ -22,18 +22,7 @@
           image_size: '1920x'
       }}
     {% else %}
-      <video
-        class="stylior-hero__video"
-        autoplay
-        muted
-        loop
-        playsinline
-        preload="metadata"
-        poster="{{ 'stylior-banner-2.png' | asset_url }}"
-        aria-label="{{ shop.name | escape }}"
-      >
-        <source src="{{ 'stylior-hero-shirt.mp4' | asset_url }}" type="video/mp4">
-      </video>
+      <div class="stylior-hero__placeholder" aria-hidden="true"></div>
     {% endif %}
   </div>
 </section>
@@ -47,8 +36,8 @@
     {
       "type": "video",
       "id": "video",
-      "label": "Hero video (recommended)",
-      "info": "Upload via Files if the theme asset is over 10MB. Falls back to stylior-hero-shirt.mp4 in assets."
+      "label": "Hero video",
+      "info": "Upload the video in Theme settings or Content > Files, then select it here."
     },
     {
       "type": "range",

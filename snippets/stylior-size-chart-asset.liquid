@@ -1,13 +1,18 @@
 {%- doc -%}
-  Resolves the correct Stylior size-chart asset for a product.
+  Outputs the Stylior size-chart image for a product, or nothing if none is set.
 
   Matching order:
-  1. Product metafield custom.size_chart_key (khawab | bharosa-black | bharosa-white | default)
-  2. Title / handle / type / tags keyword match
-  3. Default chart
+  1. Block/section override image
+  2. Product metafield custom.size_chart (image)
+  3. Product metafield custom.size_chart_key, then Theme settings charts
+  4. Title / handle / type / tags keyword match
+  5. Default theme-settings chart
 
   @param {object} product - Product object
   @param {string} [force_key] - Optional forced chart key from section settings
+  @param {object} [override_image] - Optional image from the section/block picker
+  @param {string} [class] - CSS class for the image
+  @param {string} [alt] - Image alt text
 
   @example
   {% render 'stylior-size-chart-asset', product: product %}
@@ -15,8 +20,11 @@
 
 {%- liquid
   assign chart_key = force_key | default: '' | strip | downcase
-  assign chart_file = 'stylior-size-chart-default.png'
-  assign chart_label = 'Size chart'
+  assign chart_image = override_image
+
+  if chart_image == blank and product.metafields.custom.size_chart != blank
+    assign chart_image = product.metafields.custom.size_chart.value | default: product.metafields.custom.size_chart
+  endif
 
   if chart_key == blank and product.metafields.custom.size_chart_key != blank
     assign chart_key = product.metafields.custom.size_chart_key.value | default: product.metafields.custom.size_chart_key | downcase | strip
@@ -41,22 +49,36 @@
     endif
   endif
 
-  case chart_key
-    when 'khawab'
-      assign chart_file = 'stylior-size-chart-khawab.png'
-      assign chart_label = 'Khawab size chart'
-    when 'bharosa-white', 'bharosa_white', 'bharosa white'
-      assign chart_file = 'stylior-size-chart-bharosa-white.png'
-      assign chart_label = 'Bharosa white size chart'
-    when 'bharosa-black', 'bharosa_black', 'bharosa black', 'bharosa'
-      assign chart_file = 'stylior-size-chart-bharosa-black.png'
-      assign chart_label = 'Bharosa black size chart'
-    else
-      assign chart_file = 'stylior-size-chart-default.png'
-      assign chart_label = 'Size chart'
-  endcase
+  if chart_image == blank
+    case chart_key
+      when 'khawab'
+        assign chart_image = settings.size_chart_khawab
+      when 'bharosa-white', 'bharosa_white', 'bharosa white'
+        assign chart_image = settings.size_chart_bharosa_white
+      when 'bharosa-black', 'bharosa_black', 'bharosa black', 'bharosa'
+        assign chart_image = settings.size_chart_bharosa_black
+      else
+        assign chart_image = settings.size_chart_default
+    endcase
+  endif
 
-  echo chart_file
-  echo '||'
-  echo chart_label
+  if chart_image == blank
+    assign chart_image = settings.size_chart_default
+  endif
+
+  assign image_class = class | default: 'stylior-size-chart__img'
+  assign image_alt = alt | default: 'Size chart'
 -%}
+
+{%- if chart_image != blank -%}
+  {{
+    chart_image
+    | image_url: width: 1400
+    | image_tag:
+      class: image_class,
+      loading: 'lazy',
+      widths: '600, 900, 1200, 1400',
+      sizes: '(min-width: 750px) 640px, 92vw',
+      alt: image_alt
+  }}
+{%- endif -%}
