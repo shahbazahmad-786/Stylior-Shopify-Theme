@@ -14,6 +14,8 @@
     "logo_height": 40,
     "logo_height_mobile": 32,
     "favicon": "shopify://shop_images/favicon.png",
+    "size_chart_product_1": "bharosa-oversized-beige-white-t-shirt-with-large-screen-print",
+    "size_chart_image_1": "shopify://shop_images/size_chart_shirrt_bharosa_white.png",
     "page_text_color": "{{ settings.color_palette.foreground }}",
     "type_body_font": "dm_sans_n4",
     "type_subheading_font": "dm_sans_n5",
