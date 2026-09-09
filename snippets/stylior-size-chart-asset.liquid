@@ -4,12 +4,11 @@
   Matching order:
   1. Block/section override image
   2. Product metafield custom.size_chart (image)
-  3. Product metafield custom.size_chart_key, then Theme settings charts
-  4. Title / handle / type / tags keyword match
-  5. Default theme-settings chart
+  3. Theme settings product + chart pairs
+  4. Single uploaded theme-settings chart (when only one is set)
+  5. Fallback theme-settings chart
 
   @param {object} product - Product object
-  @param {string} [force_key] - Optional forced chart key from section settings
   @param {object} [override_image] - Optional image from the section/block picker
   @param {string} [class] - CSS class for the image
   @param {string} [alt] - Image alt text
@@ -19,47 +18,111 @@
 {%- enddoc -%}
 
 {%- liquid
-  assign chart_key = force_key | default: '' | strip | downcase
   assign chart_image = override_image
 
   if chart_image == blank and product.metafields.custom.size_chart != blank
     assign chart_image = product.metafields.custom.size_chart.value | default: product.metafields.custom.size_chart
   endif
 
-  if chart_key == blank and product.metafields.custom.size_chart_key != blank
-    assign chart_key = product.metafields.custom.size_chart_key.value | default: product.metafields.custom.size_chart_key | downcase | strip
+  assign mapped_count = settings.size_chart_count | default: 1 | times: 1
+  if mapped_count < 1
+    assign mapped_count = 1
+  endif
+  if mapped_count > 20
+    assign mapped_count = 20
   endif
 
-  if chart_key == blank and product != blank
-    assign haystack = product.title | append: ' ' | append: product.handle | append: ' ' | append: product.type | downcase
-    for tag in product.tags
-      assign haystack = haystack | append: ' ' | append: tag | downcase
+  if chart_image == blank and product != blank
+    assign filled_images = 0
+
+    for i in (1..20)
+      if i > mapped_count
+        break
+      endif
+
+      case i
+      when 1
+        assign mapped_product = settings.size_chart_product_1
+        assign mapped_image = settings.size_chart_image_1
+      when 2
+        assign mapped_product = settings.size_chart_product_2
+        assign mapped_image = settings.size_chart_image_2
+      when 3
+        assign mapped_product = settings.size_chart_product_3
+        assign mapped_image = settings.size_chart_image_3
+      when 4
+        assign mapped_product = settings.size_chart_product_4
+        assign mapped_image = settings.size_chart_image_4
+      when 5
+        assign mapped_product = settings.size_chart_product_5
+        assign mapped_image = settings.size_chart_image_5
+      when 6
+        assign mapped_product = settings.size_chart_product_6
+        assign mapped_image = settings.size_chart_image_6
+      when 7
+        assign mapped_product = settings.size_chart_product_7
+        assign mapped_image = settings.size_chart_image_7
+      when 8
+        assign mapped_product = settings.size_chart_product_8
+        assign mapped_image = settings.size_chart_image_8
+      when 9
+        assign mapped_product = settings.size_chart_product_9
+        assign mapped_image = settings.size_chart_image_9
+      when 10
+        assign mapped_product = settings.size_chart_product_10
+        assign mapped_image = settings.size_chart_image_10
+      when 11
+        assign mapped_product = settings.size_chart_product_11
+        assign mapped_image = settings.size_chart_image_11
+      when 12
+        assign mapped_product = settings.size_chart_product_12
+        assign mapped_image = settings.size_chart_image_12
+      when 13
+        assign mapped_product = settings.size_chart_product_13
+        assign mapped_image = settings.size_chart_image_13
+      when 14
+        assign mapped_product = settings.size_chart_product_14
+        assign mapped_image = settings.size_chart_image_14
+      when 15
+        assign mapped_product = settings.size_chart_product_15
+        assign mapped_image = settings.size_chart_image_15
+      when 16
+        assign mapped_product = settings.size_chart_product_16
+        assign mapped_image = settings.size_chart_image_16
+      when 17
+        assign mapped_product = settings.size_chart_product_17
+        assign mapped_image = settings.size_chart_image_17
+      when 18
+        assign mapped_product = settings.size_chart_product_18
+        assign mapped_image = settings.size_chart_image_18
+      when 19
+        assign mapped_product = settings.size_chart_product_19
+        assign mapped_image = settings.size_chart_image_19
+      when 20
+        assign mapped_product = settings.size_chart_product_20
+        assign mapped_image = settings.size_chart_image_20
+      endcase
+
+      if mapped_image == blank
+        continue
+      endif
+
+      assign filled_images = filled_images | plus: 1
+      assign only_mapped_image = mapped_image
+
+      if mapped_product == blank
+        continue
+      endif
+
+      if mapped_product.id == product.id or mapped_product.handle == product.handle
+        assign chart_image = mapped_image
+        break
+      endif
     endfor
 
-    if haystack contains 'khawab'
-      assign chart_key = 'khawab'
-    elsif haystack contains 'bharosa'
-      if haystack contains 'white' or haystack contains 'off-white' or haystack contains 'cream'
-        assign chart_key = 'bharosa-white'
-      else
-        assign chart_key = 'bharosa-black'
-      endif
-    else
-      assign chart_key = 'default'
+    if chart_image == blank and filled_images == 1
+      assign chart_image = only_mapped_image
     endif
-  endif
-
-  if chart_image == blank
-    case chart_key
-      when 'khawab'
-        assign chart_image = settings.size_chart_khawab
-      when 'bharosa-white', 'bharosa_white', 'bharosa white'
-        assign chart_image = settings.size_chart_bharosa_white
-      when 'bharosa-black', 'bharosa_black', 'bharosa black', 'bharosa'
-        assign chart_image = settings.size_chart_bharosa_black
-      else
-        assign chart_image = settings.size_chart_default
-    endcase
   endif
 
   if chart_image == blank

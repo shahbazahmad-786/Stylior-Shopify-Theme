@@ -1,13 +1,8 @@
 {% comment %}
-  Product size chart — picks an admin-uploaded image by product name or metafield
+  Product size chart — uses the chart mapped to this product in Theme settings > Size charts
 {% endcomment %}
 
 {% liquid
-  assign force_key = section.settings.force_chart
-  if force_key == 'auto'
-    assign force_key = ''
-  endif
-
   assign chart_alt = section.settings.heading | default: 'Size chart'
   if product != blank
     assign chart_alt = chart_alt | append: ' — ' | append: product.title
@@ -15,7 +10,7 @@
   assign modal_id = 'stylior-size-chart-' | append: section.id
 %}
 
-{% capture chart_img_html %}{% render 'stylior-size-chart-asset', product: product, force_key: force_key, override_image: section.settings.image, class: 'stylior-size-chart__img', alt: chart_alt %}{% endcapture %}
+{% capture chart_img_html %}{% render 'stylior-size-chart-asset', product: product, override_image: section.settings.image, class: 'stylior-size-chart__img', alt: chart_alt %}{% endcapture %}
 {% assign chart_img_html = chart_img_html | strip %}
 
 {% if product != blank and chart_img_html != blank %}
@@ -129,21 +124,7 @@
       "type": "image_picker",
       "id": "image",
       "label": "Custom chart image",
-      "info": "Optional. Overrides Theme settings and product matching for this section."
-    },
-    {
-      "type": "select",
-      "id": "force_chart",
-      "label": "Force chart (optional)",
-      "options": [
-        { "value": "auto", "label": "Auto (by product name)" },
-        { "value": "default", "label": "Default" },
-        { "value": "bharosa-black", "label": "Bharosa black" },
-        { "value": "bharosa-white", "label": "Bharosa white" },
-        { "value": "khawab", "label": "Khawab" }
-      ],
-      "default": "auto",
-      "info": "Uses charts uploaded in Theme settings > Size charts. Auto matches product title/handle/tags."
+      "info": "Optional. Overrides Theme settings > Size charts for this section."
     }
   ],
   "presets": [

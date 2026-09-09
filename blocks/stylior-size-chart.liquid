@@ -4,11 +4,6 @@
     assign product = collections.all.products.first
   endif
 
-  assign force_key = block.settings.force_chart
-  if force_key == 'auto'
-    assign force_key = ''
-  endif
-
   assign chart_alt = block.settings.heading | default: 'Size chart'
   if product != blank
     assign chart_alt = chart_alt | append: ' — ' | append: product.title
@@ -16,7 +11,7 @@
   assign modal_id = 'stylior-size-chart-' | append: block.id
 %}
 
-{% capture chart_img_html %}{% render 'stylior-size-chart-asset', product: product, force_key: force_key, override_image: block.settings.image, class: 'stylior-size-chart__img', alt: chart_alt %}{% endcapture %}
+{% capture chart_img_html %}{% render 'stylior-size-chart-asset', product: product, override_image: block.settings.image, class: 'stylior-size-chart__img', alt: chart_alt %}{% endcapture %}
 {% assign chart_img_html = chart_img_html | strip %}
 
 {% if product != blank and chart_img_html != blank %}
@@ -126,21 +121,7 @@
       "type": "image_picker",
       "id": "image",
       "label": "Custom chart image",
-      "info": "Optional. Overrides Theme settings and product matching for this block."
-    },
-    {
-      "type": "select",
-      "id": "force_chart",
-      "label": "Force chart (optional)",
-      "options": [
-        { "value": "auto", "label": "Auto (by product name)" },
-        { "value": "default", "label": "Default" },
-        { "value": "bharosa-black", "label": "Bharosa black" },
-        { "value": "bharosa-white", "label": "Bharosa white" },
-        { "value": "khawab", "label": "Khawab" }
-      ],
-      "default": "auto",
-      "info": "Uses charts uploaded in Theme settings > Size charts. Auto matches product title/handle/tags."
+      "info": "Optional. Overrides Theme settings > Size charts for this block."
     }
   ],
   "presets": [
