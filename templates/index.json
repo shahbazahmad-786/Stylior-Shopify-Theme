@@ -15,33 +15,48 @@
         "slide_1": {
           "type": "slide",
           "settings": {
-            "overlay_heading": "KHAWAB",
-            "overlay_script": "Khawab",
+            "image": "shopify://shop_images/Banner.png",
+            "overlay_heading": "",
+            "overlay_script": "",
             "heading": "Khawab Article",
             "text": "Discover the bestsellers that have captured the hearts of our customers with their perfect blend of functionality and style.",
-            "link": "",
+            "link": "shopify://products/khawab-beige-story-t-shirt-with-sack-texture-urdu-poetry",
             "button_label": "Shop now"
           }
         },
         "slide_2": {
           "type": "slide",
           "settings": {
-            "overlay_heading": "BHAROSA",
-            "overlay_script": "Bharosa",
-            "heading": "Bharosa Collection",
+            "image": "shopify://shop_images/Banner2.png",
+            "overlay_heading": "",
+            "overlay_script": "",
+            "heading": "Bharosa Article",
             "text": "Discover the bestsellers that have captured the hearts of our customers with their perfect blend of functionality and style.",
-            "link": "",
+            "link": "shopify://products/khawab-beige-story-t-shirt-with-sack-texture-urdu-poetry",
             "button_label": "Shop now"
           }
         },
         "slide_3": {
           "type": "slide",
           "settings": {
-            "overlay_heading": "STYLIOR",
-            "overlay_script": "Stylior",
-            "heading": "New Arrivals",
+            "image": "shopify://shop_images/Hero_image.webp",
+            "overlay_heading": "",
+            "overlay_script": "",
+            "heading": "Qalam Hoodie",
             "text": "Discover the bestsellers that have captured the hearts of our customers with their perfect blend of functionality and style.",
-            "link": "",
+            "link": "shopify://products/qalam-beige-hoodie-450-gsm-premium-art-piece",
+            "button_label": "Shop now"
+          }
+        },
+        "slide_kdmkre": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/Banner_Bharosa.png",
+            "overlay_heading": "",
+            "overlay_script": "",
+            "heading": "Bharosa Article",
+            "text": "Discover the bestsellers that have captured the hearts of our customers with their perfect blend of functionality and style.",
+            "link": "shopify://products/bharosa-oversized-beige-white-t-shirt-with-large-screen-print",
             "button_label": "Shop now"
           }
         }
@@ -49,7 +64,8 @@
       "block_order": [
         "slide_1",
         "slide_2",
-        "slide_3"
+        "slide_3",
+        "slide_kdmkre"
       ],
       "settings": {
         "autoplay": true,
